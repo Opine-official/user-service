@@ -5,7 +5,8 @@
   "main": "src/main.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "pnpm exec nodemon"
+    "dev": "pnpm exec nodemon",
+    "build": "pnpm exec tsc"
   },
   "keywords": [],
   "author": "",
