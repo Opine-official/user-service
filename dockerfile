@@ -1,8 +1,8 @@
 FROM node:18-alpine AS base
 
-FROM base AS tsbuilder
-
 RUN npm install pnpm -g
+
+FROM base AS tsbuilder
 
 WORKDIR /usr/src/app
 
