@@ -17,7 +17,7 @@ export interface ICreateUserResult {
 export class CreateUser implements IUseCase<ICreateUserDTO, ICreateUserResult> {
   public constructor(private readonly _userRepo: IUserRepository) {}
 
-  public async execute(input: ICreateUserDTO): Promise<ICreateUserResult> {
+  public async execute(input: ICreateUserDTO): Promise<ICreateUserResult | Error> {
     const hashedPassword = await bcrypt.hash(input.password, 10);
 
     const user = new User(
@@ -27,7 +27,11 @@ export class CreateUser implements IUseCase<ICreateUserDTO, ICreateUserResult> {
       hashedPassword
     );
 
-    await this._userRepo.save(user);
+    const saveResult = await this._userRepo.save(user);
+
+    if (saveResult instanceof Error) {
+      return saveResult;
+    }
 
     return {
       userId: user.userId,

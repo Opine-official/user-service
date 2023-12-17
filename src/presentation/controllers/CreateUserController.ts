@@ -23,6 +23,11 @@ export class CreateUserController {
       password: req.body.password,
     });
 
+    if (result instanceof Error) {
+      res.status(400).json({ error: result.message });
+      return;
+    }
+
     const response: CreatedUserDTO = new CreatedUserDTO(result.userId);
 
     res.status(201).json(response);
