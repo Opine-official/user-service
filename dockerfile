@@ -23,9 +23,9 @@ COPY package*.json ./
 
 RUN pnpm install --production
 
-RUN pnpm add @vercel/ncc
+RUN npm install -g @vercel/ncc
 
-RUN ncc build ./dist/index.js -o -m prod
+RUN ncc build ./dist/main.js -m -o prod
 
 FROM base AS runner
 
