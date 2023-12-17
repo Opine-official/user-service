@@ -1,8 +1,8 @@
 FROM node:18-alpine AS base
 
-FROM base AS tsbuilder
-
 RUN npm install pnpm -g
+
+FROM base AS tsbuilder
 
 WORKDIR /usr/src/app
 
@@ -23,9 +23,9 @@ COPY package*.json ./
 
 RUN pnpm install --production
 
-RUN pnpm install -g @vercel/ncc
+RUN npm install -g @vercel/ncc
 
-RUN ncc build ./dist/index.js -o -m prod
+RUN ncc build ./dist/main.js -m -o prod
 
 FROM base AS runner
 
