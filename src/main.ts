@@ -5,18 +5,16 @@ import { Server } from "./presentation/Server";
 import { CreateUserController } from "./presentation/controllers/CreateUserController";
 import { LoginUser } from "./application/use-cases/LoginUser";
 import { LoginUserController } from "./presentation/controllers/LoginUserController";
+import { EmailService } from "./infrastructure/email/EmailService";
+import { DatabaseConnection } from "./infrastructure/database/Connection";
 
 export async function main(): Promise<void> {
-  try {
-    await mongoose.connect("mongodb://127.0.0.1:27017/OpineUserService");
-    console.log("Successfully connected to user service database");
-  } catch (e) {
-    console.log("Mongodb connection failed");
-  }
+  await DatabaseConnection.connect();
 
   const userRepo = new UserRepository();
+  const emailService = new EmailService();
 
-  const createUser = new CreateUser(userRepo);
+  const createUser = new CreateUser(userRepo, emailService);
   const loginUser = new LoginUser(userRepo);
 
   const createUserController = new CreateUserController(createUser);
