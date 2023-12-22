@@ -28,8 +28,8 @@ export class CreateUser implements IUseCase<ICreateUserDTO, ICreateUserResult> {
 
     const user = new User(
       input.name,
-      input.username,
       input.email,
+      input.username,
       hashedPassword
     );
 
@@ -39,7 +39,7 @@ export class CreateUser implements IUseCase<ICreateUserDTO, ICreateUserResult> {
       return saveResult;
     }
 
-    const emailResult = await this._emailService.sendVerificationEmail(
+    const emailResult = await this._emailService.send(
       user.email,
       user.emailVerificationCode
     );

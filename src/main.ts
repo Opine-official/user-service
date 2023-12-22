@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import { CreateUser } from "./application/use-cases/CreateUser";
 import { UserRepository } from "./infrastructure/repositories /UserRepository";
 import { Server } from "./presentation/Server";
@@ -12,7 +11,7 @@ export async function main(): Promise<void> {
   await DatabaseConnection.connect();
 
   const userRepo = new UserRepository();
-  const emailService = new EmailService();
+  const emailService = new EmailService(process.env.SEND_EMAIL as string);
 
   const createUser = new CreateUser(userRepo, emailService);
   const loginUser = new LoginUser(userRepo);

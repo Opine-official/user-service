@@ -1,35 +1,38 @@
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
+
+type SEND_EMAIL = string;
+
+class EmailSendError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "EmailSendError";
+  }
+}
 
 export class EmailService {
-  private transporter: nodemailer.Transporter;
+  private readonly sendEmail: SEND_EMAIL;
 
-  constructor() {
-    this.transporter = nodemailer.createTransport({
-      service: "Gmail",
-      auth: {
-        user: "hackerconnect630@gmail.com",
-        pass: "djzrpibqugonybxx",
-      },
-    });
+  constructor(sendEmail: SEND_EMAIL) {
+    this.sendEmail = sendEmail;
   }
 
-  async sendVerificationEmail(
+  public async send(
     to: string,
-    verificationCode: string
-  ): Promise<Error | void> {
-    const mailOptions: nodemailer.SendMailOptions = {
-      from: "hackerconnect630@gmail.com",
-      to,
-      subject: "Account Verification",
-      text: `Your verification code is: ${verificationCode}`,
-    };
-
+    emailVerificationCode: string
+  ): Promise<void | EmailSendError> {
     try {
-      await this.transporter.sendMail(mailOptions);
-      console.log("Verification email sent successfully");
-    } catch (error) {
-      console.error("Error sending verification email:", error);
-      return new Error("Failed to send verification email");
+      const resend = new Resend(process.env.RESEND_API);
+
+      const data = await resend.emails.send({
+        from: this.sendEmail,
+        to,
+        subject: "Welcome Onboard!",
+        html: `<strong>It works! ${emailVerificationCode}</strong>`,
+      });
+
+      console.log(data);
+    } catch (error: unknown) {
+      return new EmailSendError(error as string);
     }
   }
 }
