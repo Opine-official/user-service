@@ -2,8 +2,6 @@ FROM node:18-alpine AS base
 
 RUN npm install pnpm -g
 
-RUN npm install tsx -g
-
 FROM base AS tsbuilder
 
 WORKDIR /usr/src/app
@@ -11,7 +9,6 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 RUN pnpm install
-
 
 COPY . .
 
