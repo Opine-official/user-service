@@ -12,7 +12,6 @@ COPY package*.json ./
 
 RUN pnpm install
 
-
 COPY . .
 
 RUN pnpm run build
