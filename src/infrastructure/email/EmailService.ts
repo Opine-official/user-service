@@ -29,8 +29,6 @@ export class EmailService {
         subject: "Welcome Onboard!",
         html: `<strong>It works! ${emailVerificationCode}</strong>`,
       });
-
-      console.log(data);
     } catch (error: unknown) {
       return new EmailSendError(error as string);
     }

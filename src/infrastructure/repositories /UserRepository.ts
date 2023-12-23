@@ -11,6 +11,8 @@ export class UserRepository implements IUserRepository {
         username: user.username,
         password: user.password,
         userId: user.userId,
+        isEmailVerified: user.isEmailVerified,
+        emailVerificationCode: user.emailVerificationCode,
       });
 
       await userDocument.save();
@@ -35,7 +37,25 @@ export class UserRepository implements IUserRepository {
       userDocument.username,
       userDocument.email,
       userDocument.password,
-      userDocument.userId
+      userDocument.isEmailVerified,
+      userDocument.userId,
+      userDocument.emailVerificationCode
     );
+  }
+
+  public async verifyUserEmail(email: string): Promise<Error | void> {
+    const userDocument = await UserModel.findOne({ email: email });
+  
+    if (!userDocument) {
+      return new Error("User not found");
+    }
+  
+    userDocument.isEmailVerified = true;
+  
+    try {
+      await userDocument.save();
+    } catch (error: any) {
+      return new Error(error.message);
+    }
   }
 }
