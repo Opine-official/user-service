@@ -58,4 +58,25 @@ export class UserRepository implements IUserRepository {
       return new Error(error.message);
     }
   }
+
+  public async resetPassword(
+    emailOrUsername: string,
+    newPassword: string
+  ): Promise<Error | void> {
+    const userDocument = await UserModel.findOne({
+      $or: [{ email: emailOrUsername }, { username: emailOrUsername }],
+    });
+  
+    if (!userDocument) {
+      return new Error("User not found");
+    }
+  
+    userDocument.password = newPassword;
+  
+    try {
+      await userDocument.save();
+    } catch (error: any) {
+      return new Error(error.message);
+    }
+  }
 }

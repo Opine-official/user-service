@@ -2,13 +2,15 @@ import express from "express";
 import { CreateUserController } from "./controllers/CreateUserController";
 import { LoginUserController } from "./controllers/LoginUserController";
 import { VerifyUserEmailController } from "./controllers/VerifyUserController";
+import { ResetPasswordController } from "./controllers/ResetPasswordController";
 
 export class Server {
   public static async run(
     port: number,
     createUserController: CreateUserController,
     loginUserController: LoginUserController,
-    verifyUserEmailController: VerifyUserEmailController
+    verifyUserEmailController: VerifyUserEmailController,
+    resetPasswordController: ResetPasswordController
   ): Promise<void> {
     const app = express();
     app.use(express.json());
@@ -23,11 +25,11 @@ export class Server {
     app.post("/loginUser", (req, res) => loginUserController.handle(req, res));
 
     app.post("/verifyEmail", (req, res) => {
-      verifyUserEmailController.handle(req, res)
+      verifyUserEmailController.handle(req, res);
     });
 
     app.post("/resetPassword", (req, res) => {
-      // Logic to reset user password
+      resetPasswordController.handle(req, res);
     });
 
     app.post("/changePassword", (req, res) => {
@@ -37,11 +39,11 @@ export class Server {
     app.post("/refreshToken", (req, res) => {
       // Logic to refresh user token
     });
-    
+
     app.post("/logoutUser", (req, res) => {
       // Logic to logout user
     });
-    
+
     app
       .get("/me", (req, res) => {
         // Logic to get user details
