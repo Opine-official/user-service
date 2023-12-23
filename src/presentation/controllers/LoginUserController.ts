@@ -3,6 +3,7 @@ import {
   LoginUser,
   ILoginUserResult,
 } from "../../application/use-cases/LoginUser";
+import { IController } from "../../shared/interfaces/IController";
 
 export class LoginUserDTO implements ILoginUserResult {
   public readonly userId: string;
@@ -13,7 +14,7 @@ export class LoginUserDTO implements ILoginUserResult {
   }
 }
 
-export class LoginUserController {
+export class LoginUserController implements IController {
   public constructor(private readonly _useCase: LoginUser) {}
 
   public async handle(req: Request, res: Response): Promise<void> {

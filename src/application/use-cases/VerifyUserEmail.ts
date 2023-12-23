@@ -1,5 +1,5 @@
 import { IUserRepository } from "../interfaces/IUserRepository";
-import { IUseCase } from "../../shared/IUseCase";
+import { IUseCase } from "../../shared/interfaces/IUseCase";
 
 interface IVerifyUserEmailDTO {
   email: string;

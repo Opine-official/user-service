@@ -1,6 +1,7 @@
 import { User } from "../../domain/entities/User";
 import { EmailService } from "../../infrastructure/email/EmailService";
-import { IUseCase } from "../../shared/IUseCase";
+import { IUseCase } from "../../shared/interfaces/IUseCase";
+import { hashPassword } from "../../shared/utils/hashPassword";
 import { IUserRepository } from "../interfaces/IUserRepository";
 import bcrypt from "bcrypt";
 
@@ -24,7 +25,7 @@ export class CreateUser implements IUseCase<ICreateUserDTO, ICreateUserResult> {
   public async execute(
     input: ICreateUserDTO
   ): Promise<ICreateUserResult | Error> {
-    const hashedPassword = await bcrypt.hash(input.password, 10);
+    const hashedPassword = await hashPassword(input.password);
 
     const user = new User(
       input.name,

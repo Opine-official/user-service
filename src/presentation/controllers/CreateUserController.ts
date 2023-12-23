@@ -3,6 +3,7 @@ import {
   CreateUser,
   ICreateUserResult,
 } from "../../application/use-cases/CreateUser";
+import { IController } from "../../shared/interfaces/IController";
 
 export class CreatedUserDTO implements ICreateUserResult {
   public readonly userId: string;
@@ -12,7 +13,7 @@ export class CreatedUserDTO implements ICreateUserResult {
   }
 }
 
-export class CreateUserController {
+export class CreateUserController implements IController {
   public constructor(private readonly _useCase: CreateUser) {}
 
   public async handle(req: Request, res: Response): Promise<void> {
