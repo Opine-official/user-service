@@ -2,9 +2,6 @@ import { IUserRepository } from "../interfaces/IUserRepository";
 import bcrypt from "bcrypt";
 import { IUseCase } from "../../shared/interfaces/IUseCase";
 import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
-dotenv.config();
-
 interface ILoginUserDTO {
   emailOrUsername: string;
   password: string;
