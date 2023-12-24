@@ -43,15 +43,14 @@ export async function main(): Promise<void> {
     new VerifyPasswordResetCodeController(verifyPasswordResetCode);
   const resetPasswordController = new ResetPasswordController(resetPassword);
 
-  await Server.run(
-    4001,
+  await Server.run(4001, {
     createUserController,
     loginUserController,
     verifyUserEmailController,
     initiatePasswordResetController,
     verifyPasswordResetCodeController,
     resetPasswordController
-  );
+  });
 }
 
 main();
