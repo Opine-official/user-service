@@ -1,4 +1,5 @@
 import { randomUUID } from "crypto";
+import { generateOTP } from "../../shared/utils/generateOTP";
 
 export class User {
   constructor(
@@ -8,6 +9,6 @@ export class User {
     public readonly password: string,
     public isEmailVerified: boolean = false,
     public readonly userId: string = randomUUID(),
-    public readonly emailVerificationCode: string = Math.floor(Math.random() * 1000000).toString()
+    public readonly emailVerificationCode: string = generateOTP()
   ) {}
 }
