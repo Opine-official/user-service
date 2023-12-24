@@ -30,6 +30,10 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  passwordResetCode: {
+    type: String,
+    required: false,
+  },
 });
 
 export const UserModel = mongoose.model("User", UserSchema);

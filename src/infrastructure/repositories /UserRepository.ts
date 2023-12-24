@@ -45,17 +45,51 @@ export class UserRepository implements IUserRepository {
 
   public async verifyUserEmail(email: string): Promise<Error | void> {
     const userDocument = await UserModel.findOne({ email: email });
-  
+
     if (!userDocument) {
       return new Error("User not found");
     }
-  
+
     userDocument.isEmailVerified = true;
-  
+
     try {
       await userDocument.save();
     } catch (error: any) {
       return new Error(error.message);
+    }
+  }
+
+  public async savePasswordResetCode(
+    email: string,
+    otp: string
+  ): Promise<Error | void> {
+    const userDocument = await UserModel.findOne({ email: email });
+
+    if (!userDocument) {
+      return new Error("User not found");
+    }
+
+    userDocument.passwordResetCode = otp;
+
+    try {
+      await userDocument.save();
+    } catch (error: any) {
+      return new Error(error.message);
+    }
+  }
+
+  public async verifyPasswordResetCode(
+    email: string,
+    otp: string
+  ): Promise<Error | void> {
+    const userDocument = await UserModel.findOne({ email: email });
+
+    if (!userDocument) {
+      return new Error("User not found");
+    }
+
+    if (userDocument.passwordResetCode !== otp) {
+      return new Error("Invalid OTP");
     }
   }
 
@@ -66,13 +100,13 @@ export class UserRepository implements IUserRepository {
     const userDocument = await UserModel.findOne({
       $or: [{ email: emailOrUsername }, { username: emailOrUsername }],
     });
-  
+
     if (!userDocument) {
       return new Error("User not found");
     }
-  
+
     userDocument.password = newPassword;
-  
+
     try {
       await userDocument.save();
     } catch (error: any) {

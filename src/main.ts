@@ -10,6 +10,10 @@ import { VerifyUserEmail } from "./application/use-cases/VerifyUserEmail";
 import { VerifyUserEmailController } from "./presentation/controllers/VerifyUserController";
 import { ResetPassword } from "./application/use-cases/ResetPassword";
 import { ResetPasswordController } from "./presentation/controllers/ResetPasswordController";
+import { InitiatePasswordReset } from "./application/use-cases/InitiatePasswordReset";
+import { InitiatePasswordResetController } from "./presentation/controllers/InitiatePasswordResetController";
+import { VerifyPasswordResetCode } from "./application/use-cases/VerifyPasswordResetCode";
+import { VerifyPasswordResetCodeController } from "./presentation/controllers/VerifyPasswordResetCodeController";
 
 export async function main(): Promise<void> {
   await DatabaseConnection.connect();
@@ -20,6 +24,11 @@ export async function main(): Promise<void> {
   const createUser = new CreateUser(userRepo, emailService);
   const loginUser = new LoginUser(userRepo);
   const verifyUserEmail = new VerifyUserEmail(userRepo);
+  const initiatePasswordReset = new InitiatePasswordReset(
+    userRepo,
+    emailService
+  );
+  const verifyPasswordResetCode = new VerifyPasswordResetCode(userRepo);
   const resetPassword = new ResetPassword(userRepo);
 
   const createUserController = new CreateUserController(createUser);
@@ -27,6 +36,11 @@ export async function main(): Promise<void> {
   const verifyUserEmailController = new VerifyUserEmailController(
     verifyUserEmail
   );
+  const initiatePasswordResetController = new InitiatePasswordResetController(
+    initiatePasswordReset
+  );
+  const verifyPasswordResetCodeController =
+    new VerifyPasswordResetCodeController(verifyPasswordResetCode);
   const resetPasswordController = new ResetPasswordController(resetPassword);
 
   await Server.run(
@@ -34,6 +48,8 @@ export async function main(): Promise<void> {
     createUserController,
     loginUserController,
     verifyUserEmailController,
+    initiatePasswordResetController,
+    verifyPasswordResetCodeController,
     resetPasswordController
   );
 }

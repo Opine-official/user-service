@@ -3,6 +3,8 @@ import { CreateUserController } from "./controllers/CreateUserController";
 import { LoginUserController } from "./controllers/LoginUserController";
 import { VerifyUserEmailController } from "./controllers/VerifyUserController";
 import { ResetPasswordController } from "./controllers/ResetPasswordController";
+import { VerifyPasswordResetCodeController } from "./controllers/VerifyPasswordResetCodeController";
+import { InitiatePasswordResetController } from "./controllers/InitiatePasswordResetController";
 
 export class Server {
   public static async run(
@@ -10,6 +12,8 @@ export class Server {
     createUserController: CreateUserController,
     loginUserController: LoginUserController,
     verifyUserEmailController: VerifyUserEmailController,
+    initiatePasswordResetController: InitiatePasswordResetController,
+    verifyPasswordResetCodeController: VerifyPasswordResetCodeController,
     resetPasswordController: ResetPasswordController
   ): Promise<void> {
     const app = express();
@@ -26,6 +30,14 @@ export class Server {
 
     app.post("/verifyEmail", (req, res) => {
       verifyUserEmailController.handle(req, res);
+    });
+
+    app.post("/initiatePasswordReset", (req, res) => {
+      initiatePasswordResetController.handle(req, res);
+    });
+
+    app.post("/verifyPasswordResetCode", (req, res) => {
+      verifyPasswordResetCodeController.handle(req, res);
     });
 
     app.post("/resetPassword", (req, res) => {
