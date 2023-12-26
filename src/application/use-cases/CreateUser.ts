@@ -24,13 +24,17 @@ export class CreateUser implements IUseCase<ICreateUserDTO, ICreateUserResult> {
   public async execute(
     input: ICreateUserDTO
   ): Promise<ICreateUserResult | Error> {
-    const hashedPassword = await hashPassword(input.password);
+    const hashPasswordResult = await hashPassword(input.password);
+
+    if (hashPasswordResult instanceof Error) {
+      return hashPasswordResult;
+    }
 
     const user = new User(
       input.name,
       input.email,
       input.username,
-      hashedPassword
+      hashPasswordResult
     );
 
     const saveResult = await this._userRepo.save(user);

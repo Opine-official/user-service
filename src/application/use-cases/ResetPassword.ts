@@ -10,12 +10,15 @@ export class ResetPassword implements IUseCase<IResetPasswordDTO, void> {
   public constructor(private readonly _userRepo: IUserRepository) {}
 
   public async execute(input: IResetPasswordDTO): Promise<Error | void> {
+    const hashPasswordResult = await hashPassword(input.password);
 
-    const hashedPassword = await hashPassword(input.password);
+    if (hashPasswordResult instanceof Error) {
+      return hashPasswordResult;
+    }
 
     const resetPasswordResult = await this._userRepo.resetPassword(
       input.email,
-      hashedPassword
+      hashPasswordResult
     );
 
     if (resetPasswordResult instanceof Error) {
