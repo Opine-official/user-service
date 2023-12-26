@@ -16,8 +16,11 @@ export class UserRepository implements IUserRepository {
       });
 
       await userDocument.save();
-    } catch (error: any) {
-      return new Error(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        return new Error(error.message);
+      }
+      return new Error("Something went wrong");
     }
   }
 
@@ -54,8 +57,11 @@ export class UserRepository implements IUserRepository {
 
     try {
       await userDocument.save();
-    } catch (error: any) {
-      return new Error(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        return new Error(error.message);
+      }
+      return new Error("Something went wrong");
     }
   }
 
@@ -73,8 +79,11 @@ export class UserRepository implements IUserRepository {
 
     try {
       await userDocument.save();
-    } catch (error: any) {
-      return new Error(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        return new Error(error.message);
+      }
+      return new Error("Something went wrong");
     }
   }
 
@@ -109,8 +118,11 @@ export class UserRepository implements IUserRepository {
 
     try {
       await userDocument.save();
-    } catch (error: any) {
-      return new Error(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        return new Error(error.message);
+      }
+      return new Error("Something went wrong");
     }
   }
 }

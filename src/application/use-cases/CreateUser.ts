@@ -3,7 +3,6 @@ import { EmailService } from "../../infrastructure/email/EmailService";
 import { IUseCase } from "../../shared/interfaces/IUseCase";
 import { hashPassword } from "../../shared/utils/hashPassword";
 import { IUserRepository } from "../interfaces/IUserRepository";
-import bcrypt from "bcrypt";
 
 interface ICreateUserDTO {
   name: string;
