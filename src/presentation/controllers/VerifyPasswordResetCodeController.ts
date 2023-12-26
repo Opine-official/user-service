@@ -1,6 +1,6 @@
-import { Request, Response } from "express";
-import { VerifyPasswordResetCode } from "../../application/use-cases/VerifyPasswordResetCode";
-import { IController } from "../../shared/interfaces/IController";
+import { Request, Response } from 'express';
+import { VerifyPasswordResetCode } from '../../application/use-cases/VerifyPasswordResetCode';
+import { IController } from '../../shared/interfaces/IController';
 
 export class VerifyPasswordResetCodeController implements IController {
   public constructor(private readonly _useCase: VerifyPasswordResetCode) {}
@@ -16,6 +16,6 @@ export class VerifyPasswordResetCodeController implements IController {
       return;
     }
 
-    res.status(200).json({ message: "OTP verified successfully" });
+    res.status(200).json({ message: 'OTP verified successfully' });
   }
 }

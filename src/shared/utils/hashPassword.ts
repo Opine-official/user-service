@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt";
+import bcrypt from 'bcrypt';
 
 export async function hashPassword(password: string): Promise<Error | string> {
   try {
@@ -8,6 +8,6 @@ export async function hashPassword(password: string): Promise<Error | string> {
     if (error instanceof Error) {
       return error;
     }
-    return new Error("Something went wrong");
+    return new Error('Something went wrong');
   }
 }

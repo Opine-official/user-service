@@ -1,19 +1,19 @@
-import { CreateUser } from "./application/use-cases/CreateUser";
-import { UserRepository } from "./infrastructure/repositories /UserRepository";
-import { Server } from "./presentation/Server";
-import { CreateUserController } from "./presentation/controllers/CreateUserController";
-import { LoginUser } from "./application/use-cases/LoginUser";
-import { LoginUserController } from "./presentation/controllers/LoginUserController";
-import { EmailService } from "./infrastructure/email/EmailService";
-import { DatabaseConnection } from "./infrastructure/database/Connection";
-import { VerifyUserEmail } from "./application/use-cases/VerifyUserEmail";
-import { VerifyUserEmailController } from "./presentation/controllers/VerifyUserController";
-import { ResetPassword } from "./application/use-cases/ResetPassword";
-import { ResetPasswordController } from "./presentation/controllers/ResetPasswordController";
-import { InitiatePasswordReset } from "./application/use-cases/InitiatePasswordReset";
-import { InitiatePasswordResetController } from "./presentation/controllers/InitiatePasswordResetController";
-import { VerifyPasswordResetCode } from "./application/use-cases/VerifyPasswordResetCode";
-import { VerifyPasswordResetCodeController } from "./presentation/controllers/VerifyPasswordResetCodeController";
+import { CreateUser } from './application/use-cases/CreateUser';
+import { UserRepository } from './infrastructure/repositories /UserRepository';
+import { Server } from './presentation/Server';
+import { CreateUserController } from './presentation/controllers/CreateUserController';
+import { LoginUser } from './application/use-cases/LoginUser';
+import { LoginUserController } from './presentation/controllers/LoginUserController';
+import { EmailService } from './infrastructure/email/EmailService';
+import { DatabaseConnection } from './infrastructure/database/Connection';
+import { VerifyUserEmail } from './application/use-cases/VerifyUserEmail';
+import { VerifyUserEmailController } from './presentation/controllers/VerifyUserController';
+import { ResetPassword } from './application/use-cases/ResetPassword';
+import { ResetPasswordController } from './presentation/controllers/ResetPasswordController';
+import { InitiatePasswordReset } from './application/use-cases/InitiatePasswordReset';
+import { InitiatePasswordResetController } from './presentation/controllers/InitiatePasswordResetController';
+import { VerifyPasswordResetCode } from './application/use-cases/VerifyPasswordResetCode';
+import { VerifyPasswordResetCodeController } from './presentation/controllers/VerifyPasswordResetCodeController';
 
 export async function main(): Promise<void> {
   await DatabaseConnection.connect();
@@ -26,7 +26,7 @@ export async function main(): Promise<void> {
   const verifyUserEmail = new VerifyUserEmail(userRepo);
   const initiatePasswordReset = new InitiatePasswordReset(
     userRepo,
-    emailService
+    emailService,
   );
   const verifyPasswordResetCode = new VerifyPasswordResetCode(userRepo);
   const resetPassword = new ResetPassword(userRepo);
@@ -34,10 +34,10 @@ export async function main(): Promise<void> {
   const createUserController = new CreateUserController(createUser);
   const loginUserController = new LoginUserController(loginUser);
   const verifyUserEmailController = new VerifyUserEmailController(
-    verifyUserEmail
+    verifyUserEmail,
   );
   const initiatePasswordResetController = new InitiatePasswordResetController(
-    initiatePasswordReset
+    initiatePasswordReset,
   );
   const verifyPasswordResetCodeController =
     new VerifyPasswordResetCodeController(verifyPasswordResetCode);
@@ -49,7 +49,7 @@ export async function main(): Promise<void> {
     verifyUserEmailController,
     initiatePasswordResetController,
     verifyPasswordResetCodeController,
-    resetPasswordController
+    resetPasswordController,
   });
 }
 

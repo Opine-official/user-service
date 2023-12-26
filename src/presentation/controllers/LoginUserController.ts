@@ -1,9 +1,9 @@
-import { Request, Response } from "express";
+import { Request, Response } from 'express';
 import {
   LoginUser,
   ILoginUserResult,
-} from "../../application/use-cases/LoginUser";
-import { IController } from "../../shared/interfaces/IController";
+} from '../../application/use-cases/LoginUser';
+import { IController } from '../../shared/interfaces/IController';
 
 export class LoginUserDTO implements ILoginUserResult {
   public readonly userId: string;
@@ -24,7 +24,7 @@ export class LoginUserController implements IController {
     });
 
     if (result instanceof Error) {
-      res.status(400).json({ error: "Something went wrong" });
+      res.status(400).json({ error: 'Something went wrong' });
       return;
     }
 

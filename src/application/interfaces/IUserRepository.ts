@@ -1,4 +1,4 @@
-import { User } from "../../domain/entities/User";
+import { User } from '../../domain/entities/User';
 
 export interface IUserRepository {
   save(user: User): Promise<void | Error>;
@@ -8,6 +8,6 @@ export interface IUserRepository {
   verifyPasswordResetCode(email: string, otp: string): Promise<Error | void>;
   resetPassword(
     emailOrUsername: string,
-    newPassword: string
+    newPassword: string,
   ): Promise<Error | void>;
 }

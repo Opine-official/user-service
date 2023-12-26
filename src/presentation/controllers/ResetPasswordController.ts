@@ -1,6 +1,6 @@
-import { Request, Response } from "express";
-import { ResetPassword } from "../../application/use-cases/ResetPassword";
-import { IController } from "../../shared/interfaces/IController";
+import { Request, Response } from 'express';
+import { ResetPassword } from '../../application/use-cases/ResetPassword';
+import { IController } from '../../shared/interfaces/IController';
 
 export class ResetPasswordController implements IController {
   public constructor(private readonly _useCase: ResetPassword) {}
@@ -16,6 +16,6 @@ export class ResetPasswordController implements IController {
       return;
     }
 
-    res.status(200).json({ message: "Password changed successfully" });
+    res.status(200).json({ message: 'Password changed successfully' });
   }
 }

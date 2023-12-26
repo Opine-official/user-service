@@ -1,6 +1,6 @@
-import { UserModel } from "../models/UserModel";
-import { IUserRepository } from "../../application/interfaces/IUserRepository";
-import { User } from "../../domain/entities/User";
+import { UserModel } from '../models/UserModel';
+import { IUserRepository } from '../../application/interfaces/IUserRepository';
+import { User } from '../../domain/entities/User';
 
 export class UserRepository implements IUserRepository {
   public async save(user: User): Promise<Error | void> {
@@ -20,12 +20,12 @@ export class UserRepository implements IUserRepository {
       if (error instanceof Error) {
         return new Error(error.message);
       }
-      return new Error("Something went wrong");
+      return new Error('Something went wrong');
     }
   }
 
   public async findByEmailOrUsername(
-    emailOrUsername: string
+    emailOrUsername: string,
   ): Promise<User | null> {
     const userDocument = await UserModel.findOne({
       $or: [{ email: emailOrUsername }, { username: emailOrUsername }],
@@ -42,7 +42,7 @@ export class UserRepository implements IUserRepository {
       userDocument.password,
       userDocument.isEmailVerified,
       userDocument.userId,
-      userDocument.emailVerificationCode
+      userDocument.emailVerificationCode,
     );
   }
 
@@ -50,7 +50,7 @@ export class UserRepository implements IUserRepository {
     const userDocument = await UserModel.findOne({ email: email });
 
     if (!userDocument) {
-      return new Error("User not found");
+      return new Error('User not found');
     }
 
     userDocument.isEmailVerified = true;
@@ -61,18 +61,18 @@ export class UserRepository implements IUserRepository {
       if (error instanceof Error) {
         return new Error(error.message);
       }
-      return new Error("Something went wrong");
+      return new Error('Something went wrong');
     }
   }
 
   public async savePasswordResetCode(
     email: string,
-    otp: string
+    otp: string,
   ): Promise<Error | void> {
     const userDocument = await UserModel.findOne({ email: email });
 
     if (!userDocument) {
-      return new Error("User not found");
+      return new Error('User not found');
     }
 
     userDocument.passwordResetCode = otp;
@@ -83,35 +83,35 @@ export class UserRepository implements IUserRepository {
       if (error instanceof Error) {
         return new Error(error.message);
       }
-      return new Error("Something went wrong");
+      return new Error('Something went wrong');
     }
   }
 
   public async verifyPasswordResetCode(
     email: string,
-    otp: string
+    otp: string,
   ): Promise<Error | void> {
     const userDocument = await UserModel.findOne({ email: email });
 
     if (!userDocument) {
-      return new Error("User not found");
+      return new Error('User not found');
     }
 
     if (userDocument.passwordResetCode !== otp) {
-      return new Error("Invalid OTP");
+      return new Error('Invalid OTP');
     }
   }
 
   public async resetPassword(
     emailOrUsername: string,
-    newPassword: string
+    newPassword: string,
   ): Promise<Error | void> {
     const userDocument = await UserModel.findOne({
       $or: [{ email: emailOrUsername }, { username: emailOrUsername }],
     });
 
     if (!userDocument) {
-      return new Error("User not found");
+      return new Error('User not found');
     }
 
     userDocument.password = newPassword;
@@ -122,7 +122,7 @@ export class UserRepository implements IUserRepository {
       if (error instanceof Error) {
         return new Error(error.message);
       }
-      return new Error("Something went wrong");
+      return new Error('Something went wrong');
     }
   }
 }

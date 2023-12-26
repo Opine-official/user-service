@@ -1,8 +1,8 @@
-import { User } from "../../domain/entities/User";
-import { EmailService } from "../../infrastructure/email/EmailService";
-import { IUseCase } from "../../shared/interfaces/IUseCase";
-import { hashPassword } from "../../shared/utils/hashPassword";
-import { IUserRepository } from "../interfaces/IUserRepository";
+import { User } from '../../domain/entities/User';
+import { EmailService } from '../../infrastructure/email/EmailService';
+import { IUseCase } from '../../shared/interfaces/IUseCase';
+import { hashPassword } from '../../shared/utils/hashPassword';
+import { IUserRepository } from '../interfaces/IUserRepository';
 
 interface ICreateUserDTO {
   name: string;
@@ -18,11 +18,11 @@ export interface ICreateUserResult {
 export class CreateUser implements IUseCase<ICreateUserDTO, ICreateUserResult> {
   public constructor(
     private readonly _userRepo: IUserRepository,
-    private readonly _emailService: EmailService
+    private readonly _emailService: EmailService,
   ) {}
 
   public async execute(
-    input: ICreateUserDTO
+    input: ICreateUserDTO,
   ): Promise<ICreateUserResult | Error> {
     const hashPasswordResult = await hashPassword(input.password);
 
@@ -34,7 +34,7 @@ export class CreateUser implements IUseCase<ICreateUserDTO, ICreateUserResult> {
       input.name,
       input.email,
       input.username,
-      hashPasswordResult
+      hashPasswordResult,
     );
 
     const saveResult = await this._userRepo.save(user);
@@ -45,7 +45,7 @@ export class CreateUser implements IUseCase<ICreateUserDTO, ICreateUserResult> {
 
     const emailResult = await this._emailService.send(
       user.email,
-      user.emailVerificationCode
+      user.emailVerificationCode,
     );
 
     if (emailResult instanceof Error) {

@@ -1,6 +1,6 @@
-import { Request, Response } from "express";
-import { InitiatePasswordReset } from "../../application/use-cases/InitiatePasswordReset";
-import { IController } from "../../shared/interfaces/IController";
+import { Request, Response } from 'express';
+import { InitiatePasswordReset } from '../../application/use-cases/InitiatePasswordReset';
+import { IController } from '../../shared/interfaces/IController';
 
 export class InitiatePasswordResetController implements IController {
   public constructor(private readonly _useCase: InitiatePasswordReset) {}
@@ -15,6 +15,6 @@ export class InitiatePasswordResetController implements IController {
       return;
     }
 
-    res.status(200).json({ message: "OTP sent successfully" });
+    res.status(200).json({ message: 'OTP sent successfully' });
   }
 }

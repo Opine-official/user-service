@@ -1,7 +1,7 @@
-import { IUserRepository } from "../interfaces/IUserRepository";
-import { IUseCase } from "../../shared/interfaces/IUseCase";
-import { EmailService } from "../../infrastructure/email/EmailService";
-import { generateOTP } from "../../shared/utils/generateOTP";
+import { IUserRepository } from '../interfaces/IUserRepository';
+import { IUseCase } from '../../shared/interfaces/IUseCase';
+import { EmailService } from '../../infrastructure/email/EmailService';
+import { generateOTP } from '../../shared/utils/generateOTP';
 
 interface IInitiatePasswordResetDTO {
   email: string;
@@ -12,11 +12,11 @@ export class InitiatePasswordReset
 {
   public constructor(
     private readonly _userRepo: IUserRepository,
-    private readonly _emailService: EmailService
+    private readonly _emailService: EmailService,
   ) {}
 
   public async execute(
-    input: IInitiatePasswordResetDTO
+    input: IInitiatePasswordResetDTO,
   ): Promise<void | Error> {
     const otp = generateOTP();
 

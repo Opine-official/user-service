@@ -1,6 +1,6 @@
-import { IUserRepository } from "../interfaces/IUserRepository";
-import { hashPassword } from "../../shared/utils/hashPassword";
-import { IUseCase } from "../../shared/interfaces/IUseCase";
+import { IUserRepository } from '../interfaces/IUserRepository';
+import { hashPassword } from '../../shared/utils/hashPassword';
+import { IUseCase } from '../../shared/interfaces/IUseCase';
 
 interface IResetPasswordDTO {
   email: string;
@@ -18,7 +18,7 @@ export class ResetPassword implements IUseCase<IResetPasswordDTO, void> {
 
     const resetPasswordResult = await this._userRepo.resetPassword(
       input.email,
-      hashPasswordResult
+      hashPasswordResult,
     );
 
     if (resetPasswordResult instanceof Error) {

@@ -1,6 +1,6 @@
-import { Request, Response } from "express";
-import { VerifyUserEmail } from "../../application/use-cases/VerifyUserEmail";
-import { IController } from "../../shared/interfaces/IController";
+import { Request, Response } from 'express';
+import { VerifyUserEmail } from '../../application/use-cases/VerifyUserEmail';
+import { IController } from '../../shared/interfaces/IController';
 
 export class VerifyUserEmailController implements IController {
   public constructor(private readonly _useCase: VerifyUserEmail) {}
@@ -16,6 +16,6 @@ export class VerifyUserEmailController implements IController {
       return;
     }
 
-    res.status(200).json({ message: "Email verified successfully" });
+    res.status(200).json({ message: 'Email verified successfully' });
   }
 }

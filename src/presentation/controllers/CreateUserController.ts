@@ -1,9 +1,9 @@
-import { Request, Response } from "express";
+import { Request, Response } from 'express';
 import {
   CreateUser,
   ICreateUserResult,
-} from "../../application/use-cases/CreateUser";
-import { IController } from "../../shared/interfaces/IController";
+} from '../../application/use-cases/CreateUser';
+import { IController } from '../../shared/interfaces/IController';
 
 export class CreatedUserDTO implements ICreateUserResult {
   public readonly userId: string;

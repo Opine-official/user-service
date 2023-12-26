@@ -1,11 +1,11 @@
-import { Resend } from "resend";
+import { Resend } from 'resend';
 
 type SEND_EMAIL = string;
 
 class EmailSendError extends Error {
   constructor(message: string) {
     super(message);
-    this.name = "EmailSendError";
+    this.name = 'EmailSendError';
   }
 }
 
@@ -18,7 +18,7 @@ export class EmailService {
 
   public async send(
     to: string,
-    emailVerificationCode: string
+    emailVerificationCode: string,
   ): Promise<void | EmailSendError> {
     try {
       const resend = new Resend(process.env.RESEND_API);
@@ -26,7 +26,7 @@ export class EmailService {
       const data = await resend.emails.send({
         from: this.sendEmail,
         to,
-        subject: "Welcome Onboard!",
+        subject: 'Welcome Onboard!',
         html: `<strong>It works! ${emailVerificationCode}</strong>`,
       });
 
@@ -35,7 +35,7 @@ export class EmailService {
       if (error instanceof Error) {
         return new EmailSendError(error.message);
       }
-      return new EmailSendError("Something went wrong");
+      return new EmailSendError('Something went wrong');
     }
   }
 }
