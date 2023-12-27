@@ -14,7 +14,7 @@ import { InitiatePasswordReset } from './application/use-cases/InitiatePasswordR
 import { InitiatePasswordResetController } from './presentation/controllers/InitiatePasswordResetController';
 import { VerifyPasswordResetCode } from './application/use-cases/VerifyPasswordResetCode';
 import { VerifyPasswordResetCodeController } from './presentation/controllers/VerifyPasswordResetCodeController';
-import { LogoutController } from './presentation/controllers/LogoutController';
+import { LogoutController } from './presentation/controllers/LogoutUserController';
 
 export async function main(): Promise<void> {
   await DatabaseConnection.connect();
