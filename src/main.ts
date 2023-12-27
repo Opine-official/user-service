@@ -43,7 +43,7 @@ export async function main(): Promise<void> {
   const verifyPasswordResetCodeController =
     new VerifyPasswordResetCodeController(verifyPasswordResetCode);
   const resetPasswordController = new ResetPasswordController(resetPassword);
-  const logoutUserController = new LoginUserController();
+  const logoutUserController = new LogoutUserController();
 
   await Server.run(4001, {
     createUserController,
