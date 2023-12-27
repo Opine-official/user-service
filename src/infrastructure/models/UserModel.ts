@@ -24,13 +24,22 @@ const UserSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  isEmailVerified: {
-    type: Boolean,
-    required: true,
-    default: false,
-  },
-  emailVerificationCode: {
-    type: String,
+  emailVerification: {
+    type: {
+      code: {
+        type: String,
+        required: true,
+      },
+      expiry: {
+        type: Date,
+        required: true,
+      },
+      isVerified: {
+        type: Boolean,
+        required: true,
+        default: false,
+      },
+    },
     required: true,
   },
   passwordResetCode: {

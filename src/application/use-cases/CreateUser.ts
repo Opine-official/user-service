@@ -45,7 +45,7 @@ export class CreateUser implements IUseCase<ICreateUserDTO, ICreateUserResult> {
 
     const emailResult = await this._emailService.send(
       user.email,
-      user.emailVerificationCode,
+      user.emailVerification.code,
     );
 
     if (emailResult instanceof Error) {

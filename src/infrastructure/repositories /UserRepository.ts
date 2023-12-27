@@ -11,8 +11,7 @@ export class UserRepository implements IUserRepository {
         username: user.username,
         password: user.password,
         userId: user.userId,
-        isEmailVerified: user.isEmailVerified,
-        emailVerificationCode: user.emailVerificationCode,
+        emailVerification: user.emailVerification,
       });
 
       await userDocument.save();
@@ -40,9 +39,8 @@ export class UserRepository implements IUserRepository {
       userDocument.username,
       userDocument.email,
       userDocument.password,
-      userDocument.isEmailVerified,
       userDocument.userId,
-      userDocument.emailVerificationCode,
+      userDocument.emailVerification,
     );
   }
 
@@ -56,7 +54,8 @@ export class UserRepository implements IUserRepository {
       return new Error('User not found');
     }
 
-    userDocument.emailVerificationCode = otp;
+    userDocument.emailVerification.code = otp;
+    userDocument.emailVerification.expiry = new Date(Date.now() + 1000 * 60 * 60);
 
     try {
       await userDocument.save();
@@ -75,7 +74,11 @@ export class UserRepository implements IUserRepository {
       return new Error('User not found');
     }
 
-    userDocument.isEmailVerified = true;
+    if (new Date() > userDocument.emailVerification.expiry) {
+      return new Error('OTP has expired');
+    }
+
+    userDocument.emailVerification.isVerified = true;
 
     try {
       await userDocument.save();

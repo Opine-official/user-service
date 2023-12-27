@@ -31,6 +31,10 @@ export class LoginUser implements IUseCase<ILoginUserDTO, ILoginUserResult> {
     if (!passwordMatch) {
       return new Error('Invalid password');
     }
+    
+    if(!user.emailVerification.isVerified) {
+      return new Error('Email not verified');
+    }
 
     const SECRET = process.env.JWT_SECRET;
 
