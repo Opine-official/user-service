@@ -15,6 +15,8 @@ import { InitiatePasswordResetController } from './presentation/controllers/Init
 import { VerifyPasswordResetCode } from './application/use-cases/VerifyPasswordResetCode';
 import { VerifyPasswordResetCodeController } from './presentation/controllers/VerifyPasswordResetCodeController';
 import { LogoutUserController } from './presentation/controllers/LogoutUserController';
+import { ResendOTP } from './application/use-cases/ResendOTP';
+import { ResendOTPController } from './presentation/controllers/ResendOTPController';
 
 export async function main(): Promise<void> {
   await DatabaseConnection.connect();
@@ -24,6 +26,7 @@ export async function main(): Promise<void> {
 
   const createUser = new CreateUser(userRepo, emailService);
   const loginUser = new LoginUser(userRepo);
+  const resendOTP = new ResendOTP(userRepo, emailService);
   const verifyUserEmail = new VerifyUserEmail(userRepo);
   const initiatePasswordReset = new InitiatePasswordReset(
     userRepo,
@@ -34,6 +37,7 @@ export async function main(): Promise<void> {
 
   const createUserController = new CreateUserController(createUser);
   const loginUserController = new LoginUserController(loginUser);
+  const resendOTPController = new ResendOTPController(resendOTP);
   const verifyUserEmailController = new VerifyUserEmailController(
     verifyUserEmail,
   );
@@ -48,6 +52,7 @@ export async function main(): Promise<void> {
   await Server.run(4001, {
     createUserController,
     loginUserController,
+    resendOTPController,
     verifyUserEmailController,
     initiatePasswordResetController,
     verifyPasswordResetCodeController,

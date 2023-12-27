@@ -6,10 +6,12 @@ import { ResetPasswordController } from './controllers/ResetPasswordController';
 import { VerifyPasswordResetCodeController } from './controllers/VerifyPasswordResetCodeController';
 import { InitiatePasswordResetController } from './controllers/InitiatePasswordResetController';
 import { LogoutUserController } from './controllers/LogoutUserController';
+import { ResendOTPController } from './controllers/ResendOTPController';
 
 interface ServerControllers {
   createUserController: CreateUserController;
   loginUserController: LoginUserController;
+  resendOTPController: ResendOTPController;
   verifyUserEmailController: VerifyUserEmailController;
   initiatePasswordResetController: InitiatePasswordResetController;
   verifyPasswordResetCodeController: VerifyPasswordResetCodeController;
@@ -37,6 +39,10 @@ export class Server {
 
     app.post('/verifyEmail', (req, res) => {
       controllers.verifyUserEmailController.handle(req, res);
+    });
+
+    app.post('/resendOTP', (req, res) => {
+      controllers.resendOTPController.handle(req, res);
     });
 
     app.post('/initiatePasswordReset', (req, res) => {

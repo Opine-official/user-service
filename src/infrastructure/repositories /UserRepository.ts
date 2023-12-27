@@ -46,6 +46,28 @@ export class UserRepository implements IUserRepository {
     );
   }
 
+  public async saveEmailVerificationCode(
+    email: string,
+    otp: string,
+  ): Promise<Error | void> {
+    const userDocument = await UserModel.findOne({ email: email });
+
+    if (!userDocument) {
+      return new Error('User not found');
+    }
+
+    userDocument.emailVerificationCode = otp;
+
+    try {
+      await userDocument.save();
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        return new Error(error.message);
+      }
+      return new Error('Something went wrong');
+    }
+  }
+
   public async verifyUserEmail(email: string): Promise<Error | void> {
     const userDocument = await UserModel.findOne({ email: email });
 
