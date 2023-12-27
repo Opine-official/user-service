@@ -17,6 +17,8 @@ export class VerifyPasswordResetCodeController implements IController {
       return;
     }
 
-    res.status(200).json({ message: 'OTP verified successfully' });
+    res
+      .status(200)
+      .json({ message: 'OTP verified successfully', otp: req.body.otp });
   }
 }

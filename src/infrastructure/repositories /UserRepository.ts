@@ -55,7 +55,9 @@ export class UserRepository implements IUserRepository {
     }
 
     userDocument.emailVerification.code = otp;
-    userDocument.emailVerification.expiry = new Date(Date.now() + 1000 * 60 * 60);
+    userDocument.emailVerification.expiry = new Date(
+      Date.now() + 1000 * 60 * 60,
+    );
 
     try {
       await userDocument.save();
@@ -122,7 +124,10 @@ export class UserRepository implements IUserRepository {
       return new Error('User not found');
     }
 
-    if (userDocument.passwordResetCode !== otp) {
+    if (
+      !userDocument.passwordResetCode ||
+      userDocument.passwordResetCode !== otp
+    ) {
       return new Error('Invalid OTP');
     }
   }
