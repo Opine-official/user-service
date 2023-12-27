@@ -25,11 +25,11 @@ export class Server {
 
     app.get('/', (req, res) => res.send('Server is running'));
 
-    app.post('/createUser', (req, res) =>
+    app.post('/register', (req, res) =>
       controllers.createUserController.handle(req, res),
     );
 
-    app.post('/loginUser', (req, res) =>
+    app.post('/login', (req, res) =>
       controllers.loginUserController.handle(req, res),
     );
 
