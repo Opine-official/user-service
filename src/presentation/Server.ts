@@ -5,6 +5,7 @@ import { VerifyUserEmailController } from './controllers/VerifyUserController';
 import { ResetPasswordController } from './controllers/ResetPasswordController';
 import { VerifyPasswordResetCodeController } from './controllers/VerifyPasswordResetCodeController';
 import { InitiatePasswordResetController } from './controllers/InitiatePasswordResetController';
+import { LogoutController } from './controllers/LogoutController';
 
 interface ServerControllers {
   createUserController: CreateUserController;
@@ -13,6 +14,7 @@ interface ServerControllers {
   initiatePasswordResetController: InitiatePasswordResetController;
   verifyPasswordResetCodeController: VerifyPasswordResetCodeController;
   resetPasswordController: ResetPasswordController;
+  logoutController: LogoutController;
 }
 export class Server {
   public static async run(
@@ -50,8 +52,7 @@ export class Server {
     });
 
     app.post('/logout', (req, res) => {
-      res.clearCookie('token');
-      res.send({ message: 'Logged out' });
+      controllers.loginUserController.handle(req, res);
     });
 
     app.listen(port, () => {

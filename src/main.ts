@@ -14,6 +14,7 @@ import { InitiatePasswordReset } from './application/use-cases/InitiatePasswordR
 import { InitiatePasswordResetController } from './presentation/controllers/InitiatePasswordResetController';
 import { VerifyPasswordResetCode } from './application/use-cases/VerifyPasswordResetCode';
 import { VerifyPasswordResetCodeController } from './presentation/controllers/VerifyPasswordResetCodeController';
+import { LogoutController } from './presentation/controllers/LogoutController';
 
 export async function main(): Promise<void> {
   await DatabaseConnection.connect();
@@ -42,6 +43,7 @@ export async function main(): Promise<void> {
   const verifyPasswordResetCodeController =
     new VerifyPasswordResetCodeController(verifyPasswordResetCode);
   const resetPasswordController = new ResetPasswordController(resetPassword);
+  const logoutController = new LogoutController();
 
   await Server.run(4001, {
     createUserController,
@@ -50,6 +52,7 @@ export async function main(): Promise<void> {
     initiatePasswordResetController,
     verifyPasswordResetCodeController,
     resetPasswordController,
+    logoutController,
   });
 }
 
