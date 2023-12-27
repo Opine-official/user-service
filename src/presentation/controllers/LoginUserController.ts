@@ -24,6 +24,7 @@ export class LoginUserController implements IController {
     });
 
     if (result instanceof Error) {
+      console.error(result);
       res.status(400).json({ error: 'Something went wrong' });
       return;
     }

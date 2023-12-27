@@ -11,6 +11,7 @@ export class InitiatePasswordResetController implements IController {
     });
 
     if (result instanceof Error) {
+      console.error(result);
       res.status(400).json({ error: result.message });
       return;
     }
