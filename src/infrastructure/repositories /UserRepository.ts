@@ -121,7 +121,7 @@ export class UserRepository implements IUserRepository {
     const userDocument = await UserModel.findOne({ email: email });
 
     if (!userDocument) {
-      return new Error('User not found');
+      return new Error('Failed OTP Verification: User not found');
     }
 
     if (
@@ -133,15 +133,13 @@ export class UserRepository implements IUserRepository {
   }
 
   public async resetPassword(
-    emailOrUsername: string,
+    email: string,
     newPassword: string,
   ): Promise<Error | void> {
-    const userDocument = await UserModel.findOne({
-      $or: [{ email: emailOrUsername }, { username: emailOrUsername }],
-    });
+    const userDocument = await UserModel.findOne({ email: email });
 
     if (!userDocument) {
-      return new Error('User not found');
+      return new Error('Failed reset password: User not found');
     }
 
     userDocument.password = newPassword;

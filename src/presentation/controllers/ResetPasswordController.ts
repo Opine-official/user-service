@@ -6,9 +6,9 @@ export class ResetPasswordController implements IController {
   public constructor(private readonly _useCase: ResetPassword) {}
 
   public async handle(req: Request, res: Response): Promise<void> {
-    const result = await this._useCase.execute({
-      otp: req.body.otp,
+        const result = await this._useCase.execute({
       email: req.body.email,
+      otp: req.body.otp,
       password: req.body.password,
     });
 

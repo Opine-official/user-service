@@ -12,6 +12,7 @@ interface ICreateUserDTO {
 }
 
 export interface ICreateUserResult {
+  email: string;
   userId: string;
 }
 
@@ -53,6 +54,7 @@ export class CreateUser implements IUseCase<ICreateUserDTO, ICreateUserResult> {
     }
 
     return {
+      email: user.email,
       userId: user.userId,
     };
   }

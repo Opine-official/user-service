@@ -16,6 +16,8 @@ export class InitiatePasswordResetController implements IController {
       return;
     }
 
-    res.status(200).json({ message: 'OTP sent successfully' });
+    res
+      .status(200)
+      .json({ message: 'OTP sent successfully', email: req.body.email });
   }
 }

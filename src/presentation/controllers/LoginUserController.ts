@@ -25,7 +25,9 @@ export class LoginUserController implements IController {
 
     if (result instanceof Error) {
       if (result.message === 'Email not verified') {
-        res.status(401).json({ error: result.message });
+        res
+          .status(401)
+          .json({ error: result.message, email: req.body.emailOrUsername });
         return;
       }
 

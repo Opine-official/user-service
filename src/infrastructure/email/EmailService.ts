@@ -27,7 +27,7 @@ export class EmailService {
         from: this.sendEmail,
         to,
         subject: 'Welcome Onboard!',
-        html: `<strong>It works! ${emailVerificationCode}</strong>`,
+        html: `<strong>The OTP is ${emailVerificationCode}</strong>`,
       });
 
       console.log(data);

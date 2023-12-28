@@ -7,9 +7,11 @@ import { IController } from '../../shared/interfaces/IController';
 
 export class CreatedUserDTO implements ICreateUserResult {
   public readonly userId: string;
+  public readonly email: string;
 
-  public constructor(id: string) {
+  public constructor(id: string, email: string) {
     this.userId = id;
+    this.email = email;
   }
 }
 
@@ -30,7 +32,7 @@ export class CreateUserController implements IController {
       return;
     }
 
-    const response: CreatedUserDTO = new CreatedUserDTO(result.userId);
+    const response: CreatedUserDTO = new CreatedUserDTO(result.userId, result.email);
 
     res.status(201).json(response);
   }
