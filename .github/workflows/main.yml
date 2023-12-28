@@ -28,5 +28,5 @@ jobs:
       - name: Delete old container
         run: docker rm -f opine-user-service-container
       - name: Run docker container
-        run: docker run -d -p 3001:3001 --name hackerconnect-backend-container aravsanj/hackerconnect-backend
+        run: docker run -d -p 3001:3001 --name opine-user-service-container aravsanj/opine-user-service
 

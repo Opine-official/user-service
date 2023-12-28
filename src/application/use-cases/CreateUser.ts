@@ -1,4 +1,5 @@
 import { User } from "../../domain/entities/User";
+import { EmailService } from "../../infrastructure/email/EmailService";
 import { IUseCase } from "../../shared/IUseCase";
 import { IUserRepository } from "../interfaces/IUserRepository";
 import bcrypt from "bcrypt";
@@ -15,9 +16,14 @@ export interface ICreateUserResult {
 }
 
 export class CreateUser implements IUseCase<ICreateUserDTO, ICreateUserResult> {
-  public constructor(private readonly _userRepo: IUserRepository) {}
+  public constructor(
+    private readonly _userRepo: IUserRepository,
+    private readonly _emailService: EmailService
+  ) {}
 
-  public async execute(input: ICreateUserDTO): Promise<ICreateUserResult | Error> {
+  public async execute(
+    input: ICreateUserDTO
+  ): Promise<ICreateUserResult | Error> {
     const hashedPassword = await bcrypt.hash(input.password, 10);
 
     const user = new User(
@@ -31,6 +37,15 @@ export class CreateUser implements IUseCase<ICreateUserDTO, ICreateUserResult> {
 
     if (saveResult instanceof Error) {
       return saveResult;
+    }
+
+    const emailResult = await this._emailService.sendVerificationEmail(
+      user.email,
+      user.emailVerificationCode
+    );
+
+    if (emailResult instanceof Error) {
+      return emailResult;
     }
 
     return {

@@ -23,16 +23,6 @@ COPY package*.json ./
 
 RUN pnpm install --production
 
-RUN npm install -g @vercel/ncc
-
-RUN ncc build ./dist/main.js -m -o prod
-
-FROM base AS runner
-
-WORKDIR /usr/src/app
-
-COPY --from=builder /usr/src/app/prod/ ./prod
-
 EXPOSE 3001
 
-CMD [ "node", "prod/index.js" ]
+CMD [ "node", "dist/main.js" ]
