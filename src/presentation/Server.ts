@@ -1,7 +1,7 @@
 import express from 'express';
 import { CreateUserController } from './controllers/CreateUserController';
 import { LoginUserController } from './controllers/LoginUserController';
-import { VerifyUserEmailController } from './controllers/VerifyUserController';
+import { VerifyUserEmailController } from './controllers/VerifyUserEmailController';
 import { ResetPasswordController } from './controllers/ResetPasswordController';
 import { VerifyPasswordResetCodeController } from './controllers/VerifyPasswordResetCodeController';
 import { InitiatePasswordResetController } from './controllers/InitiatePasswordResetController';

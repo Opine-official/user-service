@@ -1,16 +1,28 @@
-import { MessageProducer } from '../../../domain/interfaces/MessageProducer';
-import producer from './config';
+import { IMessageProducer } from '../../../domain/interfaces/IMessageProducer';
+import { createKafkaProducer } from './config';
 
-export class KafkaMessageProducer implements MessageProducer {
-  async sendToTopic(topic: string, message: string): Promise<void> {
+export class KafkaMessageProducer implements IMessageProducer {
+  constructor(private producer = createKafkaProducer()) {
+    this.producer.connect();
+  }
+
+  async sendToTopic(
+    topic: string,
+    key: string,
+    message: string,
+  ): Promise<void | Error> {
     const kafkaMessage = {
-      key: 'user_registered',
+      key: key,
       value: JSON.stringify(message),
     };
 
-    await producer.send({
-      topic: topic,
-      messages: [kafkaMessage],
-    });
+    try {
+      await this.producer.send({
+        topic: topic,
+        messages: [kafkaMessage],
+      });
+    } catch (error) {
+      return new Error(`Failed to send message to Kafka: ${error}`);
+    }
   }
 }

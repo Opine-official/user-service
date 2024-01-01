@@ -7,7 +7,7 @@ import { LoginUserController } from './presentation/controllers/LoginUserControl
 import { EmailService } from './infrastructure/email/EmailService';
 import { DatabaseConnection } from './infrastructure/database/Connection';
 import { VerifyUserEmail } from './application/use-cases/VerifyUserEmail';
-import { VerifyUserEmailController } from './presentation/controllers/VerifyUserController';
+import { VerifyUserEmailController } from './presentation/controllers/VerifyUserEmailController';
 import { ResetPassword } from './application/use-cases/ResetPassword';
 import { ResetPasswordController } from './presentation/controllers/ResetPasswordController';
 import { InitiatePasswordReset } from './application/use-cases/InitiatePasswordReset';
@@ -17,17 +17,19 @@ import { VerifyPasswordResetCodeController } from './presentation/controllers/Ve
 import { LogoutUserController } from './presentation/controllers/LogoutUserController';
 import { ResendOTP } from './application/use-cases/ResendOTP';
 import { ResendOTPController } from './presentation/controllers/ResendOTPController';
+import { KafkaMessageProducer } from './infrastructure/brokers/kafka/KafkaMessageProducer';
 
 export async function main(): Promise<void> {
   await DatabaseConnection.connect();
 
   const userRepo = new UserRepository();
   const emailService = new EmailService(process.env.SEND_EMAIL as string);
+  const kafkaMessageProducer = new KafkaMessageProducer();
 
   const createUser = new CreateUser(userRepo, emailService);
   const loginUser = new LoginUser(userRepo);
   const resendOTP = new ResendOTP(userRepo, emailService);
-  const verifyUserEmail = new VerifyUserEmail(userRepo);
+  const verifyUserEmail = new VerifyUserEmail(userRepo, kafkaMessageProducer);
   const initiatePasswordReset = new InitiatePasswordReset(
     userRepo,
     emailService,
