@@ -1,6 +1,7 @@
 import { IUserRepository } from '../interfaces/IUserRepository';
 import { IUseCase } from '../../shared/interfaces/IUseCase';
 import { IMessageProducer } from '../../domain/interfaces/IMessageProducer';
+import { IPostUser } from '../../shared/interfaces/IPostUser';
 
 interface IVerifyUserEmailDTO {
   email: string;
@@ -26,7 +27,7 @@ export class VerifyUserEmail implements IUseCase<IVerifyUserEmailDTO, void> {
       return new Error('Kafka: user not found');
     }
 
-    const postUser = {
+    const postUser: IPostUser = {
       userId: user.userId,
       profile: null, // This should be user.profile in the future once we complete user profile feature.
       name: user.name,

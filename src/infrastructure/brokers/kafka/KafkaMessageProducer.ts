@@ -13,7 +13,7 @@ export class KafkaMessageProducer implements IMessageProducer {
   ): Promise<void | Error> {
     const kafkaMessage = {
       key: key,
-      value: JSON.stringify(message),
+      value: message,
     };
 
     try {

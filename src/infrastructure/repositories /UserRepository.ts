@@ -36,8 +36,8 @@ export class UserRepository implements IUserRepository {
 
     return new User(
       userDocument.name,
-      userDocument.username,
       userDocument.email,
+      userDocument.username,
       userDocument.password,
       userDocument.userId,
       userDocument.emailVerification,
