@@ -36,10 +36,15 @@ export class LoginUserController implements IController {
       return;
     }
 
-    res.cookie('token', result.token, { httpOnly: true });
-
     const response: LoginUserDTO = new LoginUserDTO(result.userId);
 
-    res.status(200).json(response);
+    res
+      .cookie('token', result.token, {
+        httpOnly: true,
+        sameSite: 'none',
+        secure: true,
+      })
+      .status(200)
+      .json(response);
   }
 }

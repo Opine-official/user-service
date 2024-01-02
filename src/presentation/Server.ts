@@ -7,7 +7,7 @@ import { VerifyPasswordResetCodeController } from './controllers/VerifyPasswordR
 import { InitiatePasswordResetController } from './controllers/InitiatePasswordResetController';
 import { LogoutUserController } from './controllers/LogoutUserController';
 import { ResendOTPController } from './controllers/ResendOTPController';
-
+import cors from 'cors';
 interface ServerControllers {
   createUserController: CreateUserController;
   loginUserController: LoginUserController;
@@ -18,12 +18,20 @@ interface ServerControllers {
   resetPasswordController: ResetPasswordController;
   logoutUserController: LogoutUserController;
 }
+
+const corsOptions = {
+  origin: 'https://localhost:3000',
+  optionsSuccessStatus: 200,
+  credentials: true,
+};
 export class Server {
   public static async run(
     port: number,
     controllers: ServerControllers,
   ): Promise<void> {
     const app = express();
+    app.use(cors(corsOptions));
+    app.options('*', cors(corsOptions));
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
 
