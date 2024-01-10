@@ -44,6 +44,25 @@ export class UserRepository implements IUserRepository {
     );
   }
 
+  public async findById(userId: string): Promise<User | null> {
+    const userDocument = await UserModel.findOne({
+      userId,
+    });
+
+    if (!userDocument) {
+      return null;
+    }
+
+    return new User(
+      userDocument.name,
+      userDocument.email,
+      userDocument.username,
+      userDocument.password,
+      userDocument.userId,
+      userDocument.emailVerification,
+    );
+  }
+
   public async saveEmailVerificationCode(
     email: string,
     otp: string,

@@ -1,8 +1,8 @@
 import { IMessageProducer } from '../../../domain/interfaces/IMessageProducer';
-import { createKafkaProducer } from './config';
+import kafka from './config';
 
 export class KafkaMessageProducer implements IMessageProducer {
-  constructor(private producer = createKafkaProducer()) {
+  constructor(private producer = kafka.producer()) {
     this.producer.connect();
   }
 

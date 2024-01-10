@@ -18,6 +18,8 @@ import { LogoutUserController } from './presentation/controllers/LogoutUserContr
 import { ResendOTP } from './application/use-cases/ResendOTP';
 import { ResendOTPController } from './presentation/controllers/ResendOTPController';
 import { KafkaMessageProducer } from './infrastructure/brokers/kafka/KafkaMessageProducer';
+import { GetUserDetails } from './application/use-cases/GetUserDetails';
+import { GetUserDetailsController } from './presentation/controllers/GetUserDetailsController';
 
 export async function main(): Promise<void> {
   await DatabaseConnection.connect();
@@ -36,6 +38,7 @@ export async function main(): Promise<void> {
   );
   const verifyPasswordResetCode = new VerifyPasswordResetCode(userRepo);
   const resetPassword = new ResetPassword(userRepo);
+  const getUserDetails = new GetUserDetails(userRepo);
 
   const createUserController = new CreateUserController(createUser);
   const loginUserController = new LoginUserController(loginUser);
@@ -49,6 +52,8 @@ export async function main(): Promise<void> {
   const verifyPasswordResetCodeController =
     new VerifyPasswordResetCodeController(verifyPasswordResetCode);
   const resetPasswordController = new ResetPasswordController(resetPassword);
+  const getUserDetailsController = new GetUserDetailsController(getUserDetails);
+
   const logoutUserController = new LogoutUserController();
 
   await Server.run(4001, {
@@ -60,6 +65,7 @@ export async function main(): Promise<void> {
     verifyPasswordResetCodeController,
     resetPasswordController,
     logoutUserController,
+    getUserDetailsController,
   });
 }
 

@@ -31,8 +31,8 @@ export class LoginUser implements IUseCase<ILoginUserDTO, ILoginUserResult> {
     if (!passwordMatch) {
       return new Error('Invalid password');
     }
-    
-    if(!user.emailVerification.isVerified) {
+
+    if (!user.emailVerification.isVerified) {
       return new Error('Email not verified');
     }
 
@@ -43,7 +43,7 @@ export class LoginUser implements IUseCase<ILoginUserDTO, ILoginUserResult> {
     }
 
     const token = jwt.sign({ userId: user.userId }, SECRET, {
-      expiresIn: '1h',
+      expiresIn: '24h',
     });
 
     return {

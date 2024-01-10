@@ -19,5 +19,6 @@ export class User {
       expiry: new Date(Date.now() + 1000 * 60 * 60),
       isVerified: false,
     },
+    public readonly profile: string | null = null,
   ) {}
 }
