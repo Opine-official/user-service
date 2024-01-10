@@ -8,6 +8,10 @@ import { InitiatePasswordResetController } from './controllers/InitiatePasswordR
 import { LogoutUserController } from './controllers/LogoutUserController';
 import { ResendOTPController } from './controllers/ResendOTPController';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
+import { authenticateToken } from '@opine-official/authentication';
+import { GetUserDetailsController } from './controllers/GetUserDetailsController';
+
 interface ServerControllers {
   createUserController: CreateUserController;
   loginUserController: LoginUserController;
@@ -16,6 +20,7 @@ interface ServerControllers {
   initiatePasswordResetController: InitiatePasswordResetController;
   verifyPasswordResetCodeController: VerifyPasswordResetCodeController;
   resetPasswordController: ResetPasswordController;
+  getUserDetailsController: GetUserDetailsController;
   logoutUserController: LogoutUserController;
 }
 
@@ -34,6 +39,7 @@ export class Server {
     app.options('*', cors(corsOptions));
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
+    app.use(cookieParser());
 
     app.get('/', (req, res) => res.send('Server is running'));
 
@@ -63,6 +69,10 @@ export class Server {
 
     app.post('/resetPassword', (req, res) => {
       controllers.resetPasswordController.handle(req, res);
+    });
+
+    app.get('/details', authenticateToken, (req, res) => {
+      controllers.getUserDetailsController.handle(req, res);
     });
 
     app.post('/logout', (req, res) => {
