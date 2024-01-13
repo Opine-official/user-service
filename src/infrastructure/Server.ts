@@ -1,16 +1,16 @@
 import express from 'express';
-import { CreateUserController } from './controllers/CreateUserController';
-import { LoginUserController } from './controllers/LoginUserController';
-import { VerifyUserEmailController } from './controllers/VerifyUserEmailController';
-import { ResetPasswordController } from './controllers/ResetPasswordController';
-import { VerifyPasswordResetCodeController } from './controllers/VerifyPasswordResetCodeController';
-import { InitiatePasswordResetController } from './controllers/InitiatePasswordResetController';
-import { LogoutUserController } from './controllers/LogoutUserController';
-import { ResendOTPController } from './controllers/ResendOTPController';
+import { CreateUserController } from '../presentation/controllers/CreateUserController';
+import { LoginUserController } from '../presentation/controllers/LoginUserController';
+import { VerifyUserEmailController } from '../presentation/controllers/VerifyUserEmailController';
+import { ResetPasswordController } from '../presentation/controllers/ResetPasswordController';
+import { VerifyPasswordResetCodeController } from '../presentation/controllers/VerifyPasswordResetCodeController';
+import { InitiatePasswordResetController } from '../presentation/controllers/InitiatePasswordResetController';
+import { LogoutUserController } from '../presentation/controllers/LogoutUserController';
+import { ResendOTPController } from '../presentation/controllers/ResendOTPController';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { authenticateToken } from '@opine-official/authentication';
-import { GetUserDetailsController } from './controllers/GetUserDetailsController';
+import { GetUserDetailsController } from '../presentation/controllers/GetUserDetailsController';
 
 interface ServerControllers {
   createUserController: CreateUserController;

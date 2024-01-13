@@ -1,6 +1,6 @@
 import { CreateUser } from './application/use-cases/CreateUser';
 import { UserRepository } from './infrastructure/repositories /UserRepository';
-import { Server } from './presentation/Server';
+import { Server } from './infrastructure/Server';
 import { CreateUserController } from './presentation/controllers/CreateUserController';
 import { LoginUser } from './application/use-cases/LoginUser';
 import { LoginUserController } from './presentation/controllers/LoginUserController';
