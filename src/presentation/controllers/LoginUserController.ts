@@ -1,8 +1,9 @@
-import { Request, Response } from "express";
+import { Request, Response } from 'express';
 import {
   LoginUser,
   ILoginUserResult,
-} from "../../application/use-cases/LoginUser";
+} from '../../application/use-cases/LoginUser';
+import { IController } from '../../shared/interfaces/IController';
 
 export class LoginUserDTO implements ILoginUserResult {
   public readonly userId: string;
@@ -13,7 +14,7 @@ export class LoginUserDTO implements ILoginUserResult {
   }
 }
 
-export class LoginUserController {
+export class LoginUserController implements IController {
   public constructor(private readonly _useCase: LoginUser) {}
 
   public async handle(req: Request, res: Response): Promise<void> {
@@ -23,14 +24,27 @@ export class LoginUserController {
     });
 
     if (result instanceof Error) {
-      res.status(400).json({ error: "Something went wrong" });
+      if (result.message === 'Email not verified') {
+        res
+          .status(401)
+          .json({ error: result.message, email: req.body.emailOrUsername });
+        return;
+      }
+
+      console.error(result);
+      res.status(400).json({ error: 'Something went wrong' });
       return;
     }
 
-    res.cookie('token', result.token, { httpOnly: true });
-
     const response: LoginUserDTO = new LoginUserDTO(result.userId);
 
-    res.status(200).json(response);
+    res
+      .cookie('token', result.token, {
+        httpOnly: true,
+        sameSite: 'none',
+        secure: true,
+      })
+      .status(200)
+      .json(response);
   }
 }

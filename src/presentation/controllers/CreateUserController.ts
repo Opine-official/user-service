@@ -1,18 +1,21 @@
-import { Request, Response } from "express";
+import { Request, Response } from 'express';
 import {
   CreateUser,
   ICreateUserResult,
-} from "../../application/use-cases/CreateUser";
+} from '../../application/use-cases/CreateUser';
+import { IController } from '../../shared/interfaces/IController';
 
 export class CreatedUserDTO implements ICreateUserResult {
   public readonly userId: string;
+  public readonly email: string;
 
-  public constructor(id: string) {
+  public constructor(id: string, email: string) {
     this.userId = id;
+    this.email = email;
   }
 }
 
-export class CreateUserController {
+export class CreateUserController implements IController {
   public constructor(private readonly _useCase: CreateUser) {}
 
   public async handle(req: Request, res: Response): Promise<void> {
@@ -24,11 +27,12 @@ export class CreateUserController {
     });
 
     if (result instanceof Error) {
+      console.error(result);
       res.status(400).json({ error: result.message });
       return;
     }
 
-    const response: CreatedUserDTO = new CreatedUserDTO(result.userId);
+    const response: CreatedUserDTO = new CreatedUserDTO(result.userId, result.email);
 
     res.status(201).json(response);
   }
