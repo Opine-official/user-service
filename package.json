@@ -24,6 +24,7 @@
     "kafkajs": "^2.2.4",
     "mongoose": "^8.0.3",
     "resend": "^2.0.0"
+
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
@@ -32,6 +33,7 @@
     "@types/jsonwebtoken": "^9.0.5",
     "@types/node": "^20.10.4",
     "@types/nodemailer": "^6.4.14",
+
     "@typescript-eslint/eslint-plugin": "^6.16.0",
     "@typescript-eslint/parser": "^6.16.0",
     "eslint": "^8.56.0",

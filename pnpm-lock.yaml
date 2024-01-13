@@ -36,6 +36,7 @@ dependencies:
     specifier: ^2.0.0
     version: 2.0.0
 
+
 devDependencies:
   '@types/bcrypt':
     specifier: ^5.0.2
@@ -64,6 +65,7 @@ devDependencies:
   eslint:
     specifier: ^8.56.0
     version: 8.56.0
+
   nodemon:
     specifier: ^3.0.2
     version: 3.0.2
@@ -1900,6 +1902,11 @@ packages:
         optional: true
     dependencies:
       whatwg-url: 5.0.0
+    dev: false
+
+  /nodemailer@6.9.7:
+    resolution: {integrity: sha512-rUtR77ksqex/eZRLmQ21LKVH5nAAsVicAtAYudK7JgwenEDZ0UIQ1adUGqErz7sMkWYxWTTU1aeP2Jga6WQyJw==}
+    engines: {node: '>=6.0.0'}
     dev: false
 
   /nodemon@3.0.2:
