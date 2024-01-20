@@ -75,7 +75,7 @@ export class UserRepository implements IUserRepository {
 
     userDocument.emailVerification.code = otp;
     userDocument.emailVerification.expiry = new Date(
-      Date.now() + 1000 * 60 * 60,
+      Date.now() + 1000 * 60 * 5,
     );
 
     try {
@@ -88,7 +88,10 @@ export class UserRepository implements IUserRepository {
     }
   }
 
-  public async verifyUserEmail(email: string): Promise<Error | void> {
+  public async verifyUserEmail(
+    email: string,
+    otp: string,
+  ): Promise<Error | void> {
     const userDocument = await UserModel.findOne({ email: email });
 
     if (!userDocument) {
@@ -97,6 +100,10 @@ export class UserRepository implements IUserRepository {
 
     if (new Date() > userDocument.emailVerification.expiry) {
       return new Error('OTP has expired');
+    }
+
+    if (userDocument.emailVerification.code !== otp) {
+      return new Error('Wrong OTP');
     }
 
     userDocument.emailVerification.isVerified = true;

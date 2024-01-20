@@ -16,7 +16,7 @@ export class User {
     public readonly userId: string = randomUUID(),
     public emailVerification: emailVerification = {
       code: generateOTP(),
-      expiry: new Date(Date.now() + 1000 * 60 * 60),
+      expiry: new Date(Date.now() + 1000 * 60 * 5),
       isVerified: false,
     },
     public readonly profile: string | null = null,

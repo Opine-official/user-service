@@ -15,12 +15,13 @@ export class VerifyUserEmail implements IUseCase<IVerifyUserEmailDTO, void> {
   ) {}
 
   public async execute(input: IVerifyUserEmailDTO): Promise<void | Error> {
-    const result = await this._userRepo.verifyUserEmail(input.email);
+    const result = await this._userRepo.verifyUserEmail(input.email, input.otp);
 
     if (result instanceof Error) {
       return result;
     }
 
+    // This call is made to send data over Kafka
     const user = await this._userRepo.findByEmailOrUsername(input.email);
 
     if (!user) {
