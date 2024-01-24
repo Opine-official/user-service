@@ -11,6 +11,12 @@ interface IGetUserDetailsResult {
   email: string;
   profile: string | null;
   username: string;
+  website: string | null;
+  location: string | null;
+  bio: string | null;
+  twitter: string | null;
+  instagram: string | null;
+  linkedin: string | null;
 }
 
 export class GetUserDetails
@@ -33,6 +39,12 @@ export class GetUserDetails
       email: user.email,
       profile: user.profile,
       username: user.username,
+      website: user.website,
+      location: user.location,
+      bio: user.bio,
+      twitter: user.twitter,
+      instagram: user.instagram,
+      linkedin: user.linkedin,
     };
   }
 }
