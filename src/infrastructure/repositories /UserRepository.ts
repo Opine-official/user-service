@@ -23,6 +23,34 @@ export class UserRepository implements IUserRepository {
     }
   }
 
+  public async update(user: User): Promise<void | Error> {
+    try {
+      await UserModel.updateOne(
+        { userId: user.userId },
+        {
+          name: user.name,
+          email: user.email,
+          username: user.username,
+          password: user.password,
+          userId: user.userId,
+          emailVerification: user.emailVerification,
+          profile: user.profile,
+          website: user.website,
+          location: user.location,
+          bio: user.bio,
+          twitter: user.twitter,
+          instagram: user.instagram,
+          linkedin: user.linkedin,
+        },
+      );
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        return new Error(error.message);
+      }
+      return new Error('Something went wrong');
+    }
+  }
+
   public async findByEmailOrUsername(
     emailOrUsername: string,
   ): Promise<User | null> {
@@ -34,14 +62,14 @@ export class UserRepository implements IUserRepository {
       return null;
     }
 
-    return new User(
-      userDocument.name,
-      userDocument.email,
-      userDocument.username,
-      userDocument.password,
-      userDocument.userId,
-      userDocument.emailVerification,
-    );
+    return new User({
+      name: userDocument.name,
+      email: userDocument.email,
+      username: userDocument.username,
+      password: userDocument.password,
+      userId: userDocument.userId,
+      emailVerification: userDocument.emailVerification,
+    });
   }
 
   public async findById(userId: string): Promise<User | null> {
@@ -53,14 +81,21 @@ export class UserRepository implements IUserRepository {
       return null;
     }
 
-    return new User(
-      userDocument.name,
-      userDocument.email,
-      userDocument.username,
-      userDocument.password,
-      userDocument.userId,
-      userDocument.emailVerification,
-    );
+    return new User({
+      name: userDocument.name,
+      email: userDocument.email,
+      username: userDocument.username,
+      password: userDocument.password,
+      userId: userDocument.userId,
+      emailVerification: userDocument.emailVerification,
+      profile: userDocument.profile,
+      website: userDocument.website,
+      location: userDocument.location,
+      bio: userDocument.bio,
+      twitter: userDocument.twitter,
+      instagram: userDocument.instagram,
+      linkedin: userDocument.linkedin,
+    });
   }
 
   public async saveEmailVerificationCode(

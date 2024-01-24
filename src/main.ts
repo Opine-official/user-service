@@ -20,6 +20,8 @@ import { ResendOTPController } from './presentation/controllers/ResendOTPControl
 import { KafkaMessageProducer } from './infrastructure/brokers/kafka/KafkaMessageProducer';
 import { GetUserDetails } from './application/use-cases/GetUserDetails';
 import { GetUserDetailsController } from './presentation/controllers/GetUserDetailsController';
+import { UpdateUser } from './application/use-cases/UpdateUser';
+import { UpdateUserController } from './presentation/controllers/UpdateUserController';
 
 export async function main(): Promise<void> {
   await DatabaseConnection.connect();
@@ -29,6 +31,7 @@ export async function main(): Promise<void> {
   const kafkaMessageProducer = new KafkaMessageProducer();
 
   const createUser = new CreateUser(userRepo, emailService);
+  const updateUser = new UpdateUser(userRepo);
   const loginUser = new LoginUser(userRepo);
   const resendOTP = new ResendOTP(userRepo, emailService);
   const verifyUserEmail = new VerifyUserEmail(userRepo, kafkaMessageProducer);
@@ -41,6 +44,7 @@ export async function main(): Promise<void> {
   const getUserDetails = new GetUserDetails(userRepo);
 
   const createUserController = new CreateUserController(createUser);
+  const updateUserController = new UpdateUserController(updateUser);
   const loginUserController = new LoginUserController(loginUser);
   const resendOTPController = new ResendOTPController(resendOTP);
   const verifyUserEmailController = new VerifyUserEmailController(
@@ -58,6 +62,7 @@ export async function main(): Promise<void> {
 
   await Server.run(4001, {
     createUserController,
+    updateUserController,
     loginUserController,
     resendOTPController,
     verifyUserEmailController,

@@ -11,9 +11,11 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { authenticateToken } from '@opine-official/authentication';
 import { GetUserDetailsController } from '../presentation/controllers/GetUserDetailsController';
+import { UpdateUserController } from '../presentation/controllers/UpdateUserController';
 
 interface ServerControllers {
   createUserController: CreateUserController;
+  updateUserController: UpdateUserController;
   loginUserController: LoginUserController;
   resendOTPController: ResendOTPController;
   verifyUserEmailController: VerifyUserEmailController;
@@ -45,6 +47,10 @@ export class Server {
 
     app.post('/register', (req, res) =>
       controllers.createUserController.handle(req, res),
+    );
+
+    app.post('/update', authenticateToken, (req, res) =>
+      controllers.updateUserController.handle(req, res),
     );
 
     app.post('/login', (req, res) =>

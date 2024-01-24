@@ -47,6 +47,34 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
+    profile: {
+      type: String,
+      required: false,
+    },
+    website: {
+      type: String,
+      required: false,
+    },
+    location: {
+      type: String,
+      required: false,
+    },
+    bio: {
+      type: String,
+      required: false,
+    },
+    twitter: {
+      type: String,
+      required: false,
+    },
+    instagram: {
+      type: String,
+      required: false,
+    },
+    linkedin: {
+      type: String,
+      required: false,
+    },
   },
   { timestamps: true },
 );

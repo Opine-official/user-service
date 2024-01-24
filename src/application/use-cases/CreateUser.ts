@@ -31,13 +31,12 @@ export class CreateUser implements IUseCase<ICreateUserDTO, ICreateUserResult> {
       return hashPasswordResult;
     }
 
-    const user = new User(
-      input.name,
-      input.email,
-      input.username,
-      hashPasswordResult,
-    );
-
+    const user = new User({
+      name: input.name,
+      email: input.email,
+      username: input.username,
+      password: hashPasswordResult,
+    });
     const saveResult = await this._userRepo.save(user);
 
     if (saveResult instanceof Error) {
