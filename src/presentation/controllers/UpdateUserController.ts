@@ -7,7 +7,7 @@ export class UpdateUserController implements IController {
 
   public async handle(req: Request, res: Response): Promise<void> {
     const result = await this._useCase.execute({
-      userId: req.body.userId,
+      userId: req.user.userId,
       name: req.body.name,
       email: req.body.email,
       profile: req.body.profile,
