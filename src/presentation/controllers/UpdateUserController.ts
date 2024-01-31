@@ -6,11 +6,13 @@ export class UpdateUserController implements IController {
   public constructor(private readonly _useCase: UpdateUser) {}
 
   public async handle(req: Request, res: Response): Promise<void> {
+    const { file } = req;
+
     const result = await this._useCase.execute({
       userId: req.user.userId,
       name: req.body.name,
       email: req.body.email,
-      profile: req.body.profile,
+      profile: file ? file : req.body.profile,
       username: req.body.username,
       website: req.body.website,
       location: req.body.location,

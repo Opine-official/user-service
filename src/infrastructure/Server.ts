@@ -1,4 +1,5 @@
 import express from 'express';
+import multer from 'multer';
 import { CreateUserController } from '../presentation/controllers/CreateUserController';
 import { LoginUserController } from '../presentation/controllers/LoginUserController';
 import { VerifyUserEmailController } from '../presentation/controllers/VerifyUserEmailController';
@@ -45,6 +46,8 @@ export class Server {
     app.use(express.urlencoded({ extended: true }));
     app.use(cookieParser());
 
+    const upload = multer();
+
     app.get('/test', (req, res) => res.send('Server is running'));
 
     app.get('/', authenticateToken, (req, res) => {
@@ -59,8 +62,11 @@ export class Server {
       controllers.createUserController.handle(req, res),
     );
 
-    app.post('/update', authenticateToken, (req, res) =>
-      controllers.updateUserController.handle(req, res),
+    app.post(
+      '/update',
+      authenticateToken,
+      upload.single('profile'),
+      (req, res) => controllers.updateUserController.handle(req, res),
     );
 
     app.post('/login', (req, res) =>

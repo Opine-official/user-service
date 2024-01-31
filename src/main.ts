@@ -24,6 +24,7 @@ import { UpdateUser } from './application/use-cases/UpdateUser';
 import { UpdateUserController } from './presentation/controllers/UpdateUserController';
 import { GetUserByUsername } from './application/use-cases/GetUserByUsername';
 import { GetUserByUsernameController } from './presentation/controllers/GetUserByUsernameController';
+import { S3UploadService } from './infrastructure/s3/S3UploadService';
 
 export async function main(): Promise<void> {
   await DatabaseConnection.connect();
@@ -31,9 +32,10 @@ export async function main(): Promise<void> {
   const userRepo = new UserRepository();
   const emailService = new EmailService(process.env.SEND_EMAIL as string);
   const kafkaMessageProducer = new KafkaMessageProducer();
+  const s3UploadService = new S3UploadService();
 
   const createUser = new CreateUser(userRepo, emailService);
-  const updateUser = new UpdateUser(userRepo);
+  const updateUser = new UpdateUser(userRepo, s3UploadService);
   const loginUser = new LoginUser(userRepo);
   const resendOTP = new ResendOTP(userRepo, emailService);
   const verifyUserEmail = new VerifyUserEmail(userRepo, kafkaMessageProducer);
