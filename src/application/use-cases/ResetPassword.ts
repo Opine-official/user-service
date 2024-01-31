@@ -1,4 +1,4 @@
-import { IUserRepository } from '../interfaces/IUserRepository';
+import { IUserRepository } from '../../domain/interfaces/IUserRepository';
 import { hashPassword } from '../../shared/utils/hashPassword';
 import { IUseCase } from '../../shared/interfaces/IUseCase';
 
@@ -11,7 +11,7 @@ export class ResetPassword implements IUseCase<IResetPasswordDTO, void> {
   public constructor(private readonly _userRepo: IUserRepository) {}
 
   public async execute(input: IResetPasswordDTO): Promise<Error | void> {
-        const verifyOTPResult = await this._userRepo.verifyPasswordResetCode(
+    const verifyOTPResult = await this._userRepo.verifyPasswordResetCode(
       input.email,
       input.otp,
     );

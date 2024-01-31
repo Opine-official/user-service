@@ -1,5 +1,5 @@
 import { IUseCase } from '../../shared/interfaces/IUseCase';
-import { IUserRepository } from '../interfaces/IUserRepository';
+import { IUserRepository } from '../../domain/interfaces/IUserRepository';
 import { generateOTP } from '../../shared/utils/generateOTP';
 import { EmailService } from '../../infrastructure/email/EmailService';
 

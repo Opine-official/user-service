@@ -1,4 +1,4 @@
-import { IUserRepository } from '../interfaces/IUserRepository';
+import { IUserRepository } from '../../domain/interfaces/IUserRepository';
 import { IUseCase } from '../../shared/interfaces/IUseCase';
 import { EmailService } from '../../infrastructure/email/EmailService';
 import { generateOTP } from '../../shared/utils/generateOTP';

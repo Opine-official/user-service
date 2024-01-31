@@ -2,7 +2,7 @@ import { User } from '../../domain/entities/User';
 import { EmailService } from '../../infrastructure/email/EmailService';
 import { IUseCase } from '../../shared/interfaces/IUseCase';
 import { hashPassword } from '../../shared/utils/hashPassword';
-import { IUserRepository } from '../interfaces/IUserRepository';
+import { IUserRepository } from '../../domain/interfaces/IUserRepository';
 
 interface ICreateUserDTO {
   name: string;

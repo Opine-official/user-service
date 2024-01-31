@@ -43,7 +43,11 @@ export class Server {
     app.use(express.urlencoded({ extended: true }));
     app.use(cookieParser());
 
-    app.get('/', (req, res) => res.send('Server is running'));
+    app.get('/test', (req, res) => res.send('Server is running'));
+
+    app.get('/', authenticateToken, (req, res) => {
+      controllers.getUserDetailsController.handle(req, res);
+    });
 
     app.post('/register', (req, res) =>
       controllers.createUserController.handle(req, res),
@@ -75,10 +79,6 @@ export class Server {
 
     app.post('/resetPassword', (req, res) => {
       controllers.resetPasswordController.handle(req, res);
-    });
-
-    app.get('/details', authenticateToken, (req, res) => {
-      controllers.getUserDetailsController.handle(req, res);
     });
 
     app.post('/logout', (req, res) => {
