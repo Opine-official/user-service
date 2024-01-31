@@ -12,6 +12,7 @@ import cookieParser from 'cookie-parser';
 import { authenticateToken } from '@opine-official/authentication';
 import { GetUserDetailsController } from '../presentation/controllers/GetUserDetailsController';
 import { UpdateUserController } from '../presentation/controllers/UpdateUserController';
+import { GetUserByUsernameController } from '../presentation/controllers/GetUserByUsernameController';
 
 interface ServerControllers {
   createUserController: CreateUserController;
@@ -23,6 +24,7 @@ interface ServerControllers {
   verifyPasswordResetCodeController: VerifyPasswordResetCodeController;
   resetPasswordController: ResetPasswordController;
   getUserDetailsController: GetUserDetailsController;
+  getUserByUsernameController: GetUserByUsernameController;
   logoutUserController: LogoutUserController;
 }
 
@@ -47,6 +49,10 @@ export class Server {
 
     app.get('/', authenticateToken, (req, res) => {
       controllers.getUserDetailsController.handle(req, res);
+    });
+
+    app.get('/:username', (req, res) => {
+      controllers.getUserByUsernameController.handle(req, res);
     });
 
     app.post('/register', (req, res) =>

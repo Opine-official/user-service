@@ -51,6 +51,32 @@ export class UserRepository implements IUserRepository {
     }
   }
 
+  public async getUserByUsername(username: string): Promise<User | null> {
+    const userDocument = await UserModel.findOne({
+      username: username,
+    });
+
+    if (!userDocument) {
+      return null;
+    }
+
+    return new User({
+      name: userDocument.name,
+      email: userDocument.email,
+      username: userDocument.username,
+      password: userDocument.password,
+      userId: userDocument.userId,
+      emailVerification: userDocument.emailVerification,
+      profile: userDocument.profile,
+      website: userDocument.website,
+      location: userDocument.location,
+      bio: userDocument.bio,
+      twitter: userDocument.twitter,
+      instagram: userDocument.instagram,
+      linkedin: userDocument.linkedin,
+    });
+  }
+
   public async findByEmailOrUsername(
     emailOrUsername: string,
   ): Promise<User | null> {

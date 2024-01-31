@@ -22,6 +22,8 @@ import { GetUserDetails } from './application/use-cases/GetUserDetails';
 import { GetUserDetailsController } from './presentation/controllers/GetUserDetailsController';
 import { UpdateUser } from './application/use-cases/UpdateUser';
 import { UpdateUserController } from './presentation/controllers/UpdateUserController';
+import { GetUserByUsername } from './application/use-cases/GetUserByUsername';
+import { GetUserByUsernameController } from './presentation/controllers/GetUserByUsernameController';
 
 export async function main(): Promise<void> {
   await DatabaseConnection.connect();
@@ -42,6 +44,7 @@ export async function main(): Promise<void> {
   const verifyPasswordResetCode = new VerifyPasswordResetCode(userRepo);
   const resetPassword = new ResetPassword(userRepo);
   const getUserDetails = new GetUserDetails(userRepo);
+  const getUserByUsername = new GetUserByUsername(userRepo);
 
   const createUserController = new CreateUserController(createUser);
   const updateUserController = new UpdateUserController(updateUser);
@@ -57,6 +60,9 @@ export async function main(): Promise<void> {
     new VerifyPasswordResetCodeController(verifyPasswordResetCode);
   const resetPasswordController = new ResetPasswordController(resetPassword);
   const getUserDetailsController = new GetUserDetailsController(getUserDetails);
+  const getUserByUsernameController = new GetUserByUsernameController(
+    getUserByUsername,
+  );
 
   const logoutUserController = new LogoutUserController();
 
@@ -71,6 +77,7 @@ export async function main(): Promise<void> {
     resetPasswordController,
     logoutUserController,
     getUserDetailsController,
+    getUserByUsernameController,
   });
 }
 
