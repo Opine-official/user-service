@@ -30,7 +30,7 @@ export class VerifyUserEmail implements IUseCase<IVerifyUserEmailDTO, void> {
 
     const postUser: IPostUser = {
       userId: user.userId,
-      profile: null, // This should be user.profile in the future once we complete user profile feature.
+      profile: null, // Null on initial registration
       name: user.name,
       username: user.username,
       email: user.email,

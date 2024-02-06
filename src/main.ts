@@ -35,7 +35,11 @@ export async function main(): Promise<void> {
   const s3UploadService = new S3UploadService();
 
   const createUser = new CreateUser(userRepo, emailService);
-  const updateUser = new UpdateUser(userRepo, s3UploadService);
+  const updateUser = new UpdateUser(
+    userRepo,
+    s3UploadService,
+    kafkaMessageProducer,
+  );
   const loginUser = new LoginUser(userRepo);
   const resendOTP = new ResendOTP(userRepo, emailService);
   const verifyUserEmail = new VerifyUserEmail(userRepo, kafkaMessageProducer);

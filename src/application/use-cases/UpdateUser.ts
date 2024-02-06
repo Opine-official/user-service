@@ -1,6 +1,7 @@
 import { IUserRepository } from '../../domain/interfaces/IUserRepository';
 import { S3UploadService } from '../../infrastructure/s3/S3UploadService';
 import { IUseCase } from '../../shared/interfaces/IUseCase';
+import { KafkaMessageProducer } from '../../infrastructure/brokers/kafka/KafkaMessageProducer';
 
 interface IUpdateUserDTO {
   userId: string;
@@ -20,6 +21,7 @@ export class UpdateUser implements IUseCase<IUpdateUserDTO, void> {
   public constructor(
     private readonly _userRepo: IUserRepository,
     private readonly _s3UploadService: S3UploadService,
+    private readonly _messageProducer: KafkaMessageProducer,
   ) {}
 
   public async execute(input: IUpdateUserDTO): Promise<void | Error> {
@@ -56,6 +58,24 @@ export class UpdateUser implements IUseCase<IUpdateUserDTO, void> {
 
     if (result instanceof Error) {
       return result;
+    }
+
+    const updateUser = {
+      userId: input.userId,
+      profile: profile,
+      name: input.name,
+      username: input.username,
+      email: input.email,
+    };
+
+    const kafkaResult = await this._messageProducer.sendToTopic(
+      'user-update-topic',
+      'user-update-topic-1',
+      JSON.stringify(updateUser),
+    );
+
+    if (kafkaResult instanceof Error) {
+      return kafkaResult;
     }
 
     return result;
