@@ -14,6 +14,7 @@ import { authenticateToken } from '@opine-official/authentication';
 import { GetUserDetailsController } from '../presentation/controllers/GetUserDetailsController';
 import { UpdateUserController } from '../presentation/controllers/UpdateUserController';
 import { GetUserByUsernameController } from '../presentation/controllers/GetUserByUsernameController';
+import mongoSanitize from 'express-mongo-sanitize';
 
 interface ServerControllers {
   createUserController: CreateUserController;
@@ -34,6 +35,7 @@ const corsOptions = {
   optionsSuccessStatus: 200,
   credentials: true,
 };
+
 export class Server {
   public static async run(
     port: number,
@@ -45,6 +47,13 @@ export class Server {
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
     app.use(cookieParser());
+    app.use(
+      mongoSanitize({
+        onSanitize: ({ req, key }) => {
+          console.warn(`This request[${key}] is sanitized`, req.body);
+        },
+      }),
+    );
 
     const upload = multer();
 

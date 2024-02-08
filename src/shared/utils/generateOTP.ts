@@ -1,3 +1,3 @@
 export function generateOTP(): string {
-  return Math.floor(Math.random() * 1000000).toString();
+  return Math.floor(Math.random() * 900000 + 100000).toString();
 }
