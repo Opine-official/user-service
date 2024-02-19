@@ -15,6 +15,7 @@ import { GetUserDetailsController } from '../presentation/controllers/GetUserDet
 import { UpdateUserController } from '../presentation/controllers/UpdateUserController';
 import { GetUserByUsernameController } from '../presentation/controllers/GetUserByUsernameController';
 import mongoSanitize from 'express-mongo-sanitize';
+import { SaveUserReportController } from '../presentation/controllers/SaveUserReportController';
 
 interface ServerControllers {
   createUserController: CreateUserController;
@@ -28,6 +29,7 @@ interface ServerControllers {
   getUserDetailsController: GetUserDetailsController;
   getUserByUsernameController: GetUserByUsernameController;
   logoutUserController: LogoutUserController;
+  saveUserReportController: SaveUserReportController;
 }
 
 const corsOptions = {
@@ -69,6 +71,10 @@ export class Server {
 
     app.post('/register', (req, res) =>
       controllers.createUserController.handle(req, res),
+    );
+
+    app.post('/report', (req, res) =>
+      controllers.saveUserReportController.handle(req, res),
     );
 
     app.post(

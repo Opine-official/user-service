@@ -25,11 +25,15 @@ import { UpdateUserController } from './presentation/controllers/UpdateUserContr
 import { GetUserByUsername } from './application/use-cases/GetUserByUsername';
 import { GetUserByUsernameController } from './presentation/controllers/GetUserByUsernameController';
 import { S3UploadService } from './infrastructure/s3/S3UploadService';
+import { SaveUserReport } from './application/use-cases/SaveUserReport';
+import { UserReportRepository } from './infrastructure/repositories /UserReportRepository';
+import { SaveUserReportController } from './presentation/controllers/SaveUserReportController';
 
 export async function main(): Promise<void> {
   await DatabaseConnection.connect();
 
   const userRepo = new UserRepository();
+  const userReportRepo = new UserReportRepository();
   const emailService = new EmailService(process.env.SEND_EMAIL as string);
   const kafkaMessageProducer = new KafkaMessageProducer();
   const s3UploadService = new S3UploadService();
@@ -51,6 +55,7 @@ export async function main(): Promise<void> {
   const resetPassword = new ResetPassword(userRepo);
   const getUserDetails = new GetUserDetails(userRepo);
   const getUserByUsername = new GetUserByUsername(userRepo);
+  const saveUserReport = new SaveUserReport(userReportRepo);
 
   const createUserController = new CreateUserController(createUser);
   const updateUserController = new UpdateUserController(updateUser);
@@ -71,6 +76,7 @@ export async function main(): Promise<void> {
   );
 
   const logoutUserController = new LogoutUserController();
+  const saveUserReportController = new SaveUserReportController(saveUserReport);
 
   await Server.run(4001, {
     createUserController,
@@ -84,6 +90,7 @@ export async function main(): Promise<void> {
     logoutUserController,
     getUserDetailsController,
     getUserByUsernameController,
+    saveUserReportController,
   });
 }
 
