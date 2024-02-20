@@ -14,6 +14,14 @@ const UserReportSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    reportedUser: {
+      type: String,
+      required: true,
+    },
+    reporterUser: {
+      type: String,
+      required: true,
+    },
     reason: {
       type: String,
       enum: ['spam', 'inappropriate', 'hate-speech', 'harassment', 'other'],

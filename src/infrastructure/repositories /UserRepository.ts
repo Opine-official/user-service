@@ -240,4 +240,21 @@ export class UserRepository implements IUserRepository {
       return new Error('Something went wrong');
     }
   }
+
+  public async getMongoIdFromUserId(userId: string): Promise<string | Error> {
+    try {
+      const userDocument = await UserModel.findOne({ userId: userId });
+
+      if (!userDocument) {
+        return new Error('User not found');
+      }
+
+      return userDocument._id.toString();
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        return new Error(error.message);
+      }
+      return new Error('Something went wrong');
+    }
+  }
 }

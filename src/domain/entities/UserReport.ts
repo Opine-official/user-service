@@ -5,6 +5,8 @@ type UserReportParams = {
   userReportId?: string;
   reportedUserId: string;
   reporterUserId: string;
+  reportedUser: string;
+  reporterUser: string;
   reason: Reason;
   isOtherReason: boolean;
   otherDetails?: string;

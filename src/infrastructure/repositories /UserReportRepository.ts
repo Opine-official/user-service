@@ -15,6 +15,8 @@ export class UserReportRepository implements IUserReportRepository {
         userReportId: userReportDocument.userReportId,
         reportedUserId: userReportDocument.reportedUserId,
         reporterUserId: userReportDocument.reporterUserId,
+        reportedUser: userReportDocument.reportedUser,
+        reporterUser: userReportDocument.reporterUser,
         reason: userReportDocument.reason,
         isOtherReason: userReportDocument.isOtherReason,
         otherDetails: userReportDocument.otherDetails ?? '',
@@ -58,6 +60,33 @@ export class UserReportRepository implements IUserReportRepository {
   public async delete(userReportId: string): Promise<void | Error> {
     try {
       await UserReportModel.findByIdAndDelete(userReportId);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        return new Error(error.message);
+      }
+      return new Error('Something went wrong');
+    }
+  }
+
+  public async getReportedUsers(): Promise<UserReport[] | Error> {
+    try {
+      const userReportDocuments = await UserReportModel.find();
+
+      const result = userReportDocuments.map(
+        (userReportDocument) =>
+          new UserReport({
+            userReportId: userReportDocument.userReportId,
+            reportedUserId: userReportDocument.reportedUserId,
+            reporterUserId: userReportDocument.reporterUserId,
+            reportedUser: userReportDocument.reportedUser,
+            reporterUser: userReportDocument.reporterUser,
+            reason: userReportDocument.reason,
+            isOtherReason: userReportDocument.isOtherReason,
+            otherDetails: userReportDocument.otherDetails ?? '',
+          }),
+      );
+
+      return result;
     } catch (error: unknown) {
       if (error instanceof Error) {
         return new Error(error.message);
