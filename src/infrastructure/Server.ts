@@ -10,12 +10,16 @@ import { LogoutUserController } from '../presentation/controllers/LogoutUserCont
 import { ResendOTPController } from '../presentation/controllers/ResendOTPController';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import { authenticateToken } from '@opine-official/authentication';
+import {
+  authenticateToken,
+  authenticateAdmin,
+} from '@opine-official/authentication';
 import { GetUserDetailsController } from '../presentation/controllers/GetUserDetailsController';
 import { UpdateUserController } from '../presentation/controllers/UpdateUserController';
 import { GetUserByUsernameController } from '../presentation/controllers/GetUserByUsernameController';
 import mongoSanitize from 'express-mongo-sanitize';
 import { SaveUserReportController } from '../presentation/controllers/SaveUserReportController';
+import { GetReportedUsersController } from '../presentation/controllers/GetReportedUsersController';
 
 interface ServerControllers {
   createUserController: CreateUserController;
@@ -30,6 +34,7 @@ interface ServerControllers {
   getUserByUsernameController: GetUserByUsernameController;
   logoutUserController: LogoutUserController;
   saveUserReportController: SaveUserReportController;
+  getReportedUsersController: GetReportedUsersController;
 }
 
 const corsOptions = {
@@ -63,6 +68,10 @@ export class Server {
 
     app.get('/', authenticateToken, (req, res) => {
       controllers.getUserDetailsController.handle(req, res);
+    });
+
+    app.get('/reports', authenticateAdmin, (req, res) => {
+      controllers.getReportedUsersController.handle(req, res);
     });
 
     app.get('/:username', (req, res) => {

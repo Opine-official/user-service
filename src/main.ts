@@ -28,6 +28,8 @@ import { S3UploadService } from './infrastructure/s3/S3UploadService';
 import { SaveUserReport } from './application/use-cases/SaveUserReport';
 import { UserReportRepository } from './infrastructure/repositories /UserReportRepository';
 import { SaveUserReportController } from './presentation/controllers/SaveUserReportController';
+import { GetReportedUsers } from './application/use-cases/GetReportedUsers';
+import { GetReportedUsersController } from './presentation/controllers/GetReportedUsersController';
 
 export async function main(): Promise<void> {
   await DatabaseConnection.connect();
@@ -55,7 +57,8 @@ export async function main(): Promise<void> {
   const resetPassword = new ResetPassword(userRepo);
   const getUserDetails = new GetUserDetails(userRepo);
   const getUserByUsername = new GetUserByUsername(userRepo);
-  const saveUserReport = new SaveUserReport(userReportRepo);
+  const saveUserReport = new SaveUserReport(userReportRepo, userRepo);
+  const getReportedUsers = new GetReportedUsers(userReportRepo);
 
   const createUserController = new CreateUserController(createUser);
   const updateUserController = new UpdateUserController(updateUser);
@@ -77,6 +80,9 @@ export async function main(): Promise<void> {
 
   const logoutUserController = new LogoutUserController();
   const saveUserReportController = new SaveUserReportController(saveUserReport);
+  const getReportedUsersController = new GetReportedUsersController(
+    getReportedUsers,
+  );
 
   await Server.run(4001, {
     createUserController,
@@ -91,6 +97,7 @@ export async function main(): Promise<void> {
     getUserDetailsController,
     getUserByUsernameController,
     saveUserReportController,
+    getReportedUsersController,
   });
 }
 

@@ -5,4 +5,5 @@ export interface IUserReportRepository {
   save(userReport: UserReport): Promise<void | Error>;
   update(userReport: UserReport): Promise<void | Error>;
   delete(userReportId: string): Promise<void | Error>;
+  getReportedUsers(): Promise<UserReport[] | Error>;
 }
