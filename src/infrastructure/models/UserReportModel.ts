@@ -1,4 +1,4 @@
-import mongoose, { InferSchemaType } from 'mongoose';
+import mongoose, { InferSchemaType, Schema } from 'mongoose';
 
 const UserReportSchema = new mongoose.Schema(
   {
@@ -15,11 +15,13 @@ const UserReportSchema = new mongoose.Schema(
       required: true,
     },
     reportedUser: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: 'User',
       required: true,
     },
     reporterUser: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: 'User',
       required: true,
     },
     reason: {
