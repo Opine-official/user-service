@@ -246,7 +246,7 @@ export class UserRepository implements IUserRepository {
       const userDocument = await UserModel.findOne({ userId: userId });
 
       if (!userDocument) {
-        return new Error('User not found');
+        throw new Error('User not found');
       }
 
       return userDocument._id.toString();

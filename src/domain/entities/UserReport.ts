@@ -16,6 +16,8 @@ export class UserReport {
   userReportId: string;
   reportedUserId: string;
   reporterUserId: string;
+  reportedUser: string;
+  reporterUser: string;
   reason: Reason;
   isOtherReason: boolean;
   otherDetails?: string;
@@ -23,6 +25,8 @@ export class UserReport {
   constructor({
     reportedUserId,
     reporterUserId,
+    reportedUser,
+    reporterUser,
     reason,
     isOtherReason,
     otherDetails,
@@ -31,6 +35,8 @@ export class UserReport {
     this.userReportId = userReportId;
     this.reportedUserId = reportedUserId;
     this.reporterUserId = reporterUserId;
+    this.reportedUser = reportedUser;
+    this.reporterUser = reporterUser;
     this.reason = reason;
     this.isOtherReason = isOtherReason;
     this.otherDetails = otherDetails;
