@@ -15,8 +15,8 @@ export class UserReportRepository implements IUserReportRepository {
         userReportId: userReportDocument.userReportId,
         reportedUserId: userReportDocument.reportedUserId,
         reporterUserId: userReportDocument.reporterUserId,
-        reportedUser: userReportDocument.reportedUser.toString(),
-        reporterUser: userReportDocument.reporterUser.toString(),
+        reportedUser: userReportDocument.reportedUser as unknown as string,
+        reporterUser: userReportDocument.reporterUser as unknown as string,
         reason: userReportDocument.reason,
         isOtherReason: userReportDocument.isOtherReason,
         otherDetails: userReportDocument.otherDetails ?? '',
@@ -70,7 +70,9 @@ export class UserReportRepository implements IUserReportRepository {
 
   public async getReportedUsers(): Promise<UserReport[] | Error> {
     try {
-      const userReportDocuments = await UserReportModel.find();
+      const userReportDocuments = await UserReportModel.find()
+        .populate('reportedUser', 'username -_id')
+        .populate('reporterUser', 'username -_id');
 
       const result = userReportDocuments.map(
         (userReportDocument) =>
@@ -78,8 +80,8 @@ export class UserReportRepository implements IUserReportRepository {
             userReportId: userReportDocument.userReportId,
             reportedUserId: userReportDocument.reportedUserId,
             reporterUserId: userReportDocument.reporterUserId,
-            reportedUser: userReportDocument.reportedUser.toString(),
-            reporterUser: userReportDocument.reporterUser.toString(),
+            reportedUser: userReportDocument.reportedUser as unknown as string,
+            reporterUser: userReportDocument.reporterUser as unknown as string,
             reason: userReportDocument.reason,
             isOtherReason: userReportDocument.isOtherReason,
             otherDetails: userReportDocument.otherDetails ?? '',

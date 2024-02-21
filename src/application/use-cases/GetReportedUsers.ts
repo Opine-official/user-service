@@ -26,6 +26,8 @@ export class GetReportedUsers
       userReportId: userReport.userReportId,
       reportedUserId: userReport.reportedUserId,
       reporterUserId: userReport.reporterUserId,
+      reportedUser: userReport.reportedUser,
+      reporterUser: userReport.reporterUser,
       reason: userReport.reason,
       isOtherReason: userReport.isOtherReason,
       otherDetails: userReport.otherDetails ?? '',
