@@ -3,7 +3,7 @@ import { IUserRepository } from '../../domain/interfaces/IUserRepository';
 import { User } from '../../domain/entities/User';
 
 export class UserRepository implements IUserRepository {
-  public async save(user: User): Promise<Error | void> {
+  public async save(user: User): Promise<Error | string> {
     try {
       const userDocument = new UserModel({
         name: user.name,
@@ -15,6 +15,8 @@ export class UserRepository implements IUserRepository {
       });
 
       await userDocument.save();
+
+      return userDocument._id.toString();
     } catch (error: unknown) {
       if (error instanceof Error) {
         return new Error(error.message);
