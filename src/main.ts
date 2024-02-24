@@ -30,17 +30,19 @@ import { UserReportRepository } from './infrastructure/repositories /UserReportR
 import { SaveUserReportController } from './presentation/controllers/SaveUserReportController';
 import { GetReportedUsers } from './application/use-cases/GetReportedUsers';
 import { GetReportedUsersController } from './presentation/controllers/GetReportedUsersController';
+import { UserAnalyticsRepository } from './infrastructure/repositories /UserAnalyticsRepository';
 
 export async function main(): Promise<void> {
   await DatabaseConnection.connect();
 
   const userRepo = new UserRepository();
   const userReportRepo = new UserReportRepository();
+  const userAnalyticsRepo = new UserAnalyticsRepository();
   const emailService = new EmailService(process.env.SEND_EMAIL as string);
   const kafkaMessageProducer = new KafkaMessageProducer();
   const s3UploadService = new S3UploadService();
 
-  const createUser = new CreateUser(userRepo, emailService);
+  const createUser = new CreateUser(userRepo, emailService, userAnalyticsRepo);
   const updateUser = new UpdateUser(
     userRepo,
     s3UploadService,

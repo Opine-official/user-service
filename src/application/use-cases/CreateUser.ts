@@ -4,6 +4,8 @@ import { IUseCase } from '../../shared/interfaces/IUseCase';
 import { hashPassword } from '../../shared/utils/hashPassword';
 import { IUserRepository } from '../../domain/interfaces/IUserRepository';
 import { z } from 'zod';
+import { IUserAnalyticsRepository } from '../../domain/interfaces/IUserAnalyticsRepository';
+import { UserAnalytics } from '../../domain/entities/UserAnalytics';
 
 export const ICreateUserDTOSchema = z.object({
   name: z.string(),
@@ -33,6 +35,7 @@ export class CreateUser implements IUseCase<ICreateUserDTO, ICreateUserResult> {
   public constructor(
     private readonly _userRepo: IUserRepository,
     private readonly _emailService: EmailService,
+    private readonly _userAnalyticsRepo: IUserAnalyticsRepository,
   ) {}
 
   public async execute(
@@ -50,10 +53,10 @@ export class CreateUser implements IUseCase<ICreateUserDTO, ICreateUserResult> {
       username: input.username,
       password: hashPasswordResult,
     });
-    const saveResult = await this._userRepo.save(user);
+    const userMongoId = await this._userRepo.save(user);
 
-    if (saveResult instanceof Error) {
-      return saveResult;
+    if (userMongoId instanceof Error) {
+      return userMongoId;
     }
 
     const emailResult = await this._emailService.send(
@@ -63,6 +66,19 @@ export class CreateUser implements IUseCase<ICreateUserDTO, ICreateUserResult> {
 
     if (emailResult instanceof Error) {
       return emailResult;
+    }
+
+    const userAnalytics = new UserAnalytics({
+      username: user.username,
+      userId: user.userId,
+      registrationDate: new Date(),
+      user: userMongoId,
+    });
+
+    const analyticsResult = await this._userAnalyticsRepo.save(userAnalytics);
+
+    if (analyticsResult instanceof Error) {
+      return analyticsResult;
     }
 
     return {
