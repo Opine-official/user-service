@@ -31,6 +31,7 @@ import { SaveUserReportController } from './presentation/controllers/SaveUserRep
 import { GetReportedUsers } from './application/use-cases/GetReportedUsers';
 import { GetReportedUsersController } from './presentation/controllers/GetReportedUsersController';
 import { UserAnalyticsRepository } from './infrastructure/repositories /UserAnalyticsRepository';
+import { LogoutUser } from './application/use-cases/LogoutUser';
 
 export async function main(): Promise<void> {
   await DatabaseConnection.connect();
@@ -48,7 +49,8 @@ export async function main(): Promise<void> {
     s3UploadService,
     kafkaMessageProducer,
   );
-  const loginUser = new LoginUser(userRepo);
+  const loginUser = new LoginUser(userRepo, userAnalyticsRepo);
+  const logoutUser = new LogoutUser(userAnalyticsRepo);
   const resendOTP = new ResendOTP(userRepo, emailService);
   const verifyUserEmail = new VerifyUserEmail(userRepo, kafkaMessageProducer);
   const initiatePasswordReset = new InitiatePasswordReset(
@@ -80,7 +82,7 @@ export async function main(): Promise<void> {
     getUserByUsername,
   );
 
-  const logoutUserController = new LogoutUserController();
+  const logoutUserController = new LogoutUserController(logoutUser);
   const saveUserReportController = new SaveUserReportController(saveUserReport);
   const getReportedUsersController = new GetReportedUsersController(
     getReportedUsers,

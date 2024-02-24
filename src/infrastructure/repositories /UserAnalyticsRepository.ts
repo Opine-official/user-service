@@ -98,11 +98,17 @@ export class UserAnalyticsRepository implements IUserAnalyticsRepository {
     }
   }
 
-  public async updateLogin(userAnalyticsId: string): Promise<void | Error> {
+  public async updateLogin(userId: string): Promise<void | Error> {
     try {
-      await UserAnalyticsModel.findByIdAndUpdate(userAnalyticsId, {
-        loginTime: new Date(),
-      });
+      await UserAnalyticsModel.findOne(
+        {
+          userId,
+        },
+        {
+          loginTime: new Date(),
+          $inc: { loginCount: 1 },
+        },
+      );
     } catch (error: unknown) {
       if (error instanceof Error) {
         return new Error(error.message);
@@ -111,11 +117,17 @@ export class UserAnalyticsRepository implements IUserAnalyticsRepository {
     }
   }
 
-  public async updateLogout(userAnalyticsId: string): Promise<void | Error> {
+  public async updateLogout(userId: string): Promise<void | Error> {
     try {
-      await UserAnalyticsModel.findByIdAndUpdate(userAnalyticsId, {
-        logoutTime: new Date(),
-      });
+      await UserAnalyticsModel.findOne(
+        {
+          userId,
+        },
+        {
+          logoutTime: new Date(),
+          $inc: { logoutCount: 1 },
+        },
+      );
     } catch (error: unknown) {
       if (error instanceof Error) {
         return new Error(error.message);

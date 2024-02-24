@@ -6,6 +6,6 @@ export interface IUserAnalyticsRepository {
   update(userAnalytics: UserAnalytics): Promise<void | Error>;
   delete(userAnalyticsId: string): Promise<void | Error>;
   getAnalytics(): Promise<UserAnalytics[] | Error>;
-  updateLogin(userAnalyticsId: string): Promise<void | Error>;
-  updateLogout(userAnalyticsId: string): Promise<void | Error>;
+  updateLogin(userId: string): Promise<void | Error>;
+  updateLogout(userId: string): Promise<void | Error>;
 }

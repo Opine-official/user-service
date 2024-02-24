@@ -117,7 +117,7 @@ export class Server {
       controllers.resetPasswordController.handle(req, res);
     });
 
-    app.post('/logout', (req, res) => {
+    app.post('/logout', authenticateToken, (req, res) => {
       controllers.logoutUserController.handle(req, res);
     });
 
