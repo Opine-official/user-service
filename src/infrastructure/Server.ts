@@ -20,6 +20,7 @@ import { GetUserByUsernameController } from '../presentation/controllers/GetUser
 import mongoSanitize from 'express-mongo-sanitize';
 import { SaveUserReportController } from '../presentation/controllers/SaveUserReportController';
 import { GetReportedUsersController } from '../presentation/controllers/GetReportedUsersController';
+import { GetRegistrationAnalyticsController } from '../presentation/controllers/GetRegistrationAnalyticsController';
 
 interface ServerControllers {
   createUserController: CreateUserController;
@@ -35,6 +36,7 @@ interface ServerControllers {
   logoutUserController: LogoutUserController;
   saveUserReportController: SaveUserReportController;
   getReportedUsersController: GetReportedUsersController;
+  getRegistrationAnalyticsController: GetRegistrationAnalyticsController;
 }
 
 const corsOptions = {
@@ -68,6 +70,10 @@ export class Server {
 
     app.get('/', authenticateToken, (req, res) => {
       controllers.getUserDetailsController.handle(req, res);
+    });
+
+    app.get('/registrationAnalytics', authenticateAdmin, (req, res) => {
+      controllers.getRegistrationAnalyticsController.handle(req, res);
     });
 
     app.get('/reports', authenticateAdmin, (req, res) => {

@@ -1,5 +1,8 @@
 import { UserAnalytics } from '../../domain/entities/UserAnalytics';
-import { IUserAnalyticsRepository } from '../../domain/interfaces/IUserAnalyticsRepository';
+import {
+  IUserAnalyticsRepository,
+  RegistrationUserAnalytics,
+} from '../../domain/interfaces/IUserAnalyticsRepository';
 import { UserAnalyticsModel } from '../models/UserAnalyticsModel';
 
 export class UserAnalyticsRepository implements IUserAnalyticsRepository {
@@ -83,7 +86,6 @@ export class UserAnalyticsRepository implements IUserAnalyticsRepository {
           lastLogout: userAnalyticsDocument.lastLogout,
           loginCount: userAnalyticsDocument.loginCount,
           logoutCount: userAnalyticsDocument.logoutCount,
-
           userId: userAnalyticsDocument.userId,
           user: userAnalyticsDocument.user as unknown as string,
         });
@@ -128,6 +130,43 @@ export class UserAnalyticsRepository implements IUserAnalyticsRepository {
           $inc: { logoutCount: 1 },
         },
       );
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        return new Error(error.message);
+      }
+      return new Error('Something went wrong');
+    }
+  }
+
+  public async getRegistrationAnalytics(): Promise<
+    RegistrationUserAnalytics | Error
+  > {
+    try {
+      const count = await UserAnalyticsModel.countDocuments();
+
+      const docs = await UserAnalyticsModel.find(
+        {},
+        {
+          registrationDate: 1,
+          username: 1,
+          userId: 1,
+        },
+      );
+
+      const values = docs.map((doc) => {
+        return {
+          date: doc.registrationDate,
+          username: doc.username,
+          userId: doc.userId,
+        };
+      });
+
+      const result = {
+        count,
+        values,
+      };
+
+      return result;
     } catch (error: unknown) {
       if (error instanceof Error) {
         return new Error(error.message);
