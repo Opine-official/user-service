@@ -169,13 +169,8 @@ export class UserAnalyticsRepository implements IUserAnalyticsRepository {
         { $sort: { date: 1 } },
       ]);
 
-      const totalRegistrations = result.reduce(
-        (total, current) => total + current.count,
-        0,
-      );
-
-      if (totalRegistrations === 0) {
-        throw new Error('No registrations found');
+      if (result.length === 0) {
+        throw new Error('No user analytics found');
       }
 
       return result;
