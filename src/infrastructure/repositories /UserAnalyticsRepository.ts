@@ -99,15 +99,14 @@ export class UserAnalyticsRepository implements IUserAnalyticsRepository {
       return new Error('Something went wrong');
     }
   }
-
   public async updateLogin(userId: string): Promise<void | Error> {
     try {
-      await UserAnalyticsModel.findOne(
+      await UserAnalyticsModel.findOneAndUpdate(
         {
           userId,
         },
         {
-          loginTime: new Date(),
+          $set: { loginTime: new Date() },
           $inc: { loginCount: 1 },
         },
       );
@@ -118,15 +117,14 @@ export class UserAnalyticsRepository implements IUserAnalyticsRepository {
       return new Error('Something went wrong');
     }
   }
-
   public async updateLogout(userId: string): Promise<void | Error> {
     try {
-      await UserAnalyticsModel.findOne(
+      await UserAnalyticsModel.findOneAndUpdate(
         {
           userId,
         },
         {
-          logoutTime: new Date(),
+          $set: { logoutTime: new Date() },
           $inc: { logoutCount: 1 },
         },
       );
