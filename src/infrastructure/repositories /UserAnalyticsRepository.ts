@@ -175,7 +175,7 @@ export class UserAnalyticsRepository implements IUserAnalyticsRepository {
       );
 
       if (totalRegistrations === 0) {
-        return new Error('No registrations found');
+        throw new Error('No registrations found');
       }
 
       return result;
