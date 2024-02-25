@@ -1,13 +1,6 @@
 import { UserAnalytics } from '../entities/UserAnalytics';
 
-export type RegistrationUserAnalytics = {
-  count: number;
-  values: {
-    date: Date;
-    username: string;
-    userId: string;
-  }[];
-};
+export type RegistrationUserAnalytics = { date: Date; count: number };
 
 export interface IUserAnalyticsRepository {
   get(userAnalyticsId: string): Promise<UserAnalytics | Error>;
@@ -17,5 +10,5 @@ export interface IUserAnalyticsRepository {
   getAnalytics(): Promise<UserAnalytics[] | Error>;
   updateLogin(userId: string): Promise<void | Error>;
   updateLogout(userId: string): Promise<void | Error>;
-  getRegistrationAnalytics(): Promise<RegistrationUserAnalytics | Error>;
+  getRegistrationAnalytics(): Promise<RegistrationUserAnalytics[] | Error>;
 }

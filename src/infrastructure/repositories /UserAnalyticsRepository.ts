@@ -139,32 +139,44 @@ export class UserAnalyticsRepository implements IUserAnalyticsRepository {
   }
 
   public async getRegistrationAnalytics(): Promise<
-    RegistrationUserAnalytics | Error
+    RegistrationUserAnalytics[] | Error
   > {
     try {
-      const count = await UserAnalyticsModel.countDocuments();
-
-      const docs = await UserAnalyticsModel.find(
-        {},
+      const result = await UserAnalyticsModel.aggregate([
         {
-          registrationDate: 1,
-          username: 1,
-          userId: 1,
+          $group: {
+            _id: {
+              year: { $year: '$registrationDate' },
+              month: { $month: '$registrationDate' },
+              day: { $dayOfMonth: '$registrationDate' },
+            },
+            count: { $sum: 1 },
+          },
         },
+        {
+          $project: {
+            _id: 0,
+            date: {
+              $dateFromParts: {
+                year: '$_id.year',
+                month: '$_id.month',
+                day: '$_id.day',
+              },
+            },
+            count: 1,
+          },
+        },
+        { $sort: { date: 1 } },
+      ]);
+
+      const totalRegistrations = result.reduce(
+        (total, current) => total + current.count,
+        0,
       );
 
-      const values = docs.map((doc) => {
-        return {
-          date: doc.registrationDate,
-          username: doc.username,
-          userId: doc.userId,
-        };
-      });
-
-      const result = {
-        count,
-        values,
-      };
+      if (totalRegistrations === 0) {
+        return new Error('No registrations found');
+      }
 
       return result;
     } catch (error: unknown) {

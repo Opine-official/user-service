@@ -1,23 +1,19 @@
-import { IUserAnalyticsRepository } from '../../domain/interfaces/IUserAnalyticsRepository';
+import {
+  IUserAnalyticsRepository,
+  RegistrationUserAnalytics,
+} from '../../domain/interfaces/IUserAnalyticsRepository';
 import { IUseCase } from '../../shared/interfaces/IUseCase';
 
-interface IGetRegistrationAnalyticsResult {
-  count: number;
-  values: {
-    date: Date;
-    username: string;
-    userId: string;
-  }[];
-}
+interface IGetRegistrationAnalyticsResult extends RegistrationUserAnalytics {}
 
 export class GetRegistrationAnalytics
-  implements IUseCase<null, IGetRegistrationAnalyticsResult>
+  implements IUseCase<null, IGetRegistrationAnalyticsResult[]>
 {
   public constructor(
     private readonly _userAnalyticsRepo: IUserAnalyticsRepository,
   ) {}
 
-  public async execute(): Promise<IGetRegistrationAnalyticsResult | Error> {
+  public async execute(): Promise<IGetRegistrationAnalyticsResult[] | Error> {
     const registrationAnalytics =
       await this._userAnalyticsRepo.getRegistrationAnalytics();
 
