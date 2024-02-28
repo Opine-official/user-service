@@ -259,4 +259,16 @@ export class UserRepository implements IUserRepository {
       return new Error('Something went wrong');
     }
   }
+
+  public async banUser(username: string): Promise<void | Error> {
+    try {
+      await UserModel.updateOne({ username: username }, { isBanned: true });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        return new Error(error.message);
+      }
+
+      return new Error('Something went wrong');
+    }
+  }
 }

@@ -21,6 +21,7 @@ type UserParams = {
   twitter?: string | null;
   instagram?: string | null;
   linkedin?: string | null;
+  isBanned?: boolean;
 };
 
 export class User {
@@ -37,6 +38,7 @@ export class User {
   twitter: string | null;
   instagram: string | null;
   linkedin: string | null;
+  isBanned: boolean;
 
   constructor({
     name,
@@ -56,6 +58,7 @@ export class User {
     twitter = null,
     instagram = null,
     linkedin = null,
+    isBanned = false,
   }: UserParams) {
     this.name = name;
     this.email = email;
@@ -70,5 +73,6 @@ export class User {
     this.twitter = twitter;
     this.instagram = instagram;
     this.linkedin = linkedin;
+    this.isBanned = isBanned;
   }
 }

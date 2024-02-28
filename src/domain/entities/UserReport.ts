@@ -10,6 +10,8 @@ type UserReportParams = {
   reason: Reason;
   isOtherReason: boolean;
   otherDetails?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 };
 
 export class UserReport {
@@ -21,6 +23,8 @@ export class UserReport {
   reason: Reason;
   isOtherReason: boolean;
   otherDetails?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 
   constructor({
     reportedUserId,
@@ -31,6 +35,8 @@ export class UserReport {
     isOtherReason,
     otherDetails,
     userReportId = randomUUID(),
+    createdAt,
+    updatedAt,
   }: UserReportParams) {
     this.userReportId = userReportId;
     this.reportedUserId = reportedUserId;
@@ -40,5 +46,7 @@ export class UserReport {
     this.reason = reason;
     this.isOtherReason = isOtherReason;
     this.otherDetails = otherDetails;
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
   }
 }

@@ -34,6 +34,8 @@ import { UserAnalyticsRepository } from './infrastructure/repositories /UserAnal
 import { LogoutUser } from './application/use-cases/LogoutUser';
 import { GetRegistrationAnalytics } from './application/use-cases/GetRegistrationAnalytics';
 import { GetRegistrationAnalyticsController } from './presentation/controllers/GetRegistrationAnalyticsController';
+import { BanUser } from './application/use-cases/BanUser';
+import { BanUserController } from './presentation/controllers/BanUserController';
 
 export async function main(): Promise<void> {
   await DatabaseConnection.connect();
@@ -68,6 +70,7 @@ export async function main(): Promise<void> {
   const getRegistrationAnalytics = new GetRegistrationAnalytics(
     userAnalyticsRepo,
   );
+  const banUser = new BanUser(userRepo);
 
   const createUserController = new CreateUserController(createUser);
   const updateUserController = new UpdateUserController(updateUser);
@@ -94,6 +97,7 @@ export async function main(): Promise<void> {
   );
   const getRegistrationAnalyticsController =
     new GetRegistrationAnalyticsController(getRegistrationAnalytics);
+  const banUserController = new BanUserController(banUser);
 
   await Server.run(4001, {
     createUserController,
@@ -110,6 +114,7 @@ export async function main(): Promise<void> {
     saveUserReportController,
     getReportedUsersController,
     getRegistrationAnalyticsController,
+    banUserController,
   });
 }
 

@@ -15,4 +15,5 @@ export interface IUserRepository {
     newPassword: string,
   ): Promise<Error | void>;
   getMongoIdFromUserId(userId: string): Promise<string | Error>;
+  banUser(username: string): Promise<void | Error>;
 }

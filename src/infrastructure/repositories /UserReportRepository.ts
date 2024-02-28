@@ -20,6 +20,8 @@ export class UserReportRepository implements IUserReportRepository {
         reason: userReportDocument.reason,
         isOtherReason: userReportDocument.isOtherReason,
         otherDetails: userReportDocument.otherDetails ?? '',
+        createdAt: userReportDocument.createdAt,
+        updatedAt: userReportDocument.updatedAt,
       });
 
       return result;
@@ -85,6 +87,8 @@ export class UserReportRepository implements IUserReportRepository {
             reason: userReportDocument.reason,
             isOtherReason: userReportDocument.isOtherReason,
             otherDetails: userReportDocument.otherDetails ?? '',
+            createdAt: userReportDocument.createdAt,
+            updatedAt: userReportDocument.updatedAt,
           }),
       );
 
