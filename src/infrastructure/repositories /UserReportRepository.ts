@@ -89,6 +89,7 @@ export class UserReportRepository implements IUserReportRepository {
             otherDetails: userReportDocument.otherDetails ?? '',
             createdAt: userReportDocument.createdAt,
             updatedAt: userReportDocument.updatedAt,
+            isUserBanned: userReportDocument.isUserBanned,
           }),
       );
 

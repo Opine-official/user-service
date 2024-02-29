@@ -33,6 +33,7 @@ export class GetReportedUsers
       otherDetails: userReport.otherDetails ?? '',
       createdAt: userReport.createdAt,
       updatedAt: userReport.updatedAt,
+      isUserBanned: userReport.isUserBanned,
     }));
   }
 }
