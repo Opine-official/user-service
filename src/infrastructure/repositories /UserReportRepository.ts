@@ -101,10 +101,10 @@ export class UserReportRepository implements IUserReportRepository {
     }
   }
 
-  public async changeUserStatus(username: string): Promise<void | Error> {
+  public async changeUserStatus(mongoUserId: string): Promise<void | Error> {
     try {
       await UserReportModel.updateMany(
-        { reportedUser: username },
+        { reportedUser: mongoUserId },
         { isUserBanned: true },
       );
     } catch (error: unknown) {

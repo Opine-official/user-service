@@ -6,5 +6,5 @@ export interface IUserReportRepository {
   update(userReport: UserReport): Promise<void | Error>;
   delete(userReportId: string): Promise<void | Error>;
   getReportedUsers(): Promise<UserReport[] | Error>;
-  changeUserStatus(username: string): Promise<void | Error>;
+  changeUserStatus(mongoUserId: string): Promise<void | Error>;
 }

@@ -37,6 +37,11 @@ const UserReportSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
+    isUserBanned: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
   },
   {
     timestamps: true,
