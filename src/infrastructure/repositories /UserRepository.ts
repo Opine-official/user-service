@@ -97,6 +97,7 @@ export class UserRepository implements IUserRepository {
       password: userDocument.password,
       userId: userDocument.userId,
       emailVerification: userDocument.emailVerification,
+      isBanned: userDocument.isBanned,
     });
   }
 

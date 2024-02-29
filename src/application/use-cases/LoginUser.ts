@@ -30,6 +30,10 @@ export class LoginUser implements IUseCase<ILoginUserDTO, ILoginUserResult> {
       return new Error('User not found');
     }
 
+    if (user.isBanned) {
+      return new Error('User is banned');
+    }
+
     const passwordMatch = await bcrypt.compare(input.password, user.password);
 
     if (!passwordMatch) {
