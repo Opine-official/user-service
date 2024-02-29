@@ -100,4 +100,18 @@ export class UserReportRepository implements IUserReportRepository {
       return new Error('Something went wrong');
     }
   }
+
+  public async changeUserStatus(username: string): Promise<void | Error> {
+    try {
+      await UserReportModel.updateMany(
+        { reportedUser: username },
+        { isUserBanned: true },
+      );
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        return new Error(error.message);
+      }
+      return new Error('Something went wrong');
+    }
+  }
 }

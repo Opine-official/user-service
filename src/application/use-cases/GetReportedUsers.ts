@@ -31,6 +31,8 @@ export class GetReportedUsers
       reason: userReport.reason,
       isOtherReason: userReport.isOtherReason,
       otherDetails: userReport.otherDetails ?? '',
+      createdAt: userReport.createdAt,
+      updatedAt: userReport.updatedAt,
     }));
   }
 }

@@ -10,6 +10,7 @@ type UserReportParams = {
   reason: Reason;
   isOtherReason: boolean;
   otherDetails?: string;
+  isUserBanned?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
 };
@@ -23,6 +24,7 @@ export class UserReport {
   reason: Reason;
   isOtherReason: boolean;
   otherDetails?: string;
+  isUserBanned?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
 
@@ -34,6 +36,7 @@ export class UserReport {
     reason,
     isOtherReason,
     otherDetails,
+    isUserBanned = false,
     userReportId = randomUUID(),
     createdAt,
     updatedAt,
@@ -45,6 +48,7 @@ export class UserReport {
     this.reporterUser = reporterUser;
     this.reason = reason;
     this.isOtherReason = isOtherReason;
+    this.isUserBanned = isUserBanned;
     this.otherDetails = otherDetails;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;

@@ -70,7 +70,7 @@ export async function main(): Promise<void> {
   const getRegistrationAnalytics = new GetRegistrationAnalytics(
     userAnalyticsRepo,
   );
-  const banUser = new BanUser(userRepo);
+  const banUser = new BanUser(userRepo, userReportRepo);
 
   const createUserController = new CreateUserController(createUser);
   const updateUserController = new UpdateUserController(updateUser);
