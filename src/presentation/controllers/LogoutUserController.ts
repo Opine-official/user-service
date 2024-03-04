@@ -7,7 +7,7 @@ export class LogoutUserController implements IController {
 
   public async handle(req: Request, res: Response): Promise<void> {
     const result = await this._useCase.execute({
-      userId: req.user,
+      userId: req.user.userId,
     });
 
     if (result instanceof Error) {
