@@ -41,12 +41,18 @@ interface ServerControllers {
   banUserController: BanUserController;
 }
 
-const corsOptions = {
-  origin: ['https://localhost:3000', 'https://backend.opine.ink'],
-  optionsSuccessStatus: 200,
-  credentials: true,
-};
+const allowedOrigins = ['https://localhost:3000', 'https://backend.opine.ink'];
 
+const corsOptions = {
+  // @ts-ignore
+  origin: function (origin, callback) {
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+};
 export class Server {
   public static async run(
     port: number,
