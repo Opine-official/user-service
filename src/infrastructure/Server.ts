@@ -41,8 +41,23 @@ interface ServerControllers {
   banUserController: BanUserController;
 }
 
+const whitelist = ['https://localhost:3000', 'https://backend.opine.ink'];
+
 const corsOptions = {
-  origin: ['https://localhost:3000', 'https://backend.opine.ink'],
+  origin: function (
+    origin: string | undefined,
+    callback: (
+      err: Error | null,
+      origin?: boolean | string | RegExp | Array<boolean | string | RegExp>,
+    ) => void,
+  ) {
+    if (!origin) return callback(new Error('Not allowed by CORS'));
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   optionsSuccessStatus: 200,
   credentials: true,
 };
