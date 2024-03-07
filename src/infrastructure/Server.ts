@@ -68,7 +68,7 @@ export class Server {
 
     const upload = multer();
 
-    app.get('/test', (req, res) => res.send('Server is running'));
+    app.get('/test', (req, res) => res.send('User server is running'));
 
     app.get('/', authenticateToken, (req, res) => {
       controllers.getUserDetailsController.handle(req, res);
