@@ -48,7 +48,7 @@ const allowedOrigins = [
 ];
 
 const corsOptions = {
-  origin: 'https://www.opine.ink',
+  origin: allowedOrigins,
   optionsSuccessStatus: 200,
   credentials: true,
 };
