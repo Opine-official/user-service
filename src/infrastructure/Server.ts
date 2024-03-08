@@ -41,8 +41,14 @@ interface ServerControllers {
   banUserController: BanUserController;
 }
 
+const allowedOrigins = [
+  'https://localhost:3000',
+  'https://www.opine.ink',
+  'https://opine.ink',
+];
+
 const corsOptions = {
-  origin: ['https://localhost:3000', 'https://www.opine.ink' , 'https://opine.ink'],
+  origin: 'https://www.opine.ink',
   optionsSuccessStatus: 200,
   credentials: true,
 };
@@ -68,7 +74,9 @@ export class Server {
 
     const upload = multer();
 
-    app.get('/test', (req, res) => res.send('User server is running'));
+    app.get('/test', (req, res) =>
+      res.send('User server is running successfully'),
+    );
 
     app.get('/', authenticateToken, (req, res) => {
       controllers.getUserDetailsController.handle(req, res);
