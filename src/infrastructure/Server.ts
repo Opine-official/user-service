@@ -42,7 +42,7 @@ interface ServerControllers {
 }
 
 const corsOptions = {
-  origin: ['https://localhost:3000', 'https://backend.opine.ink'],
+  origin: ['https://localhost:3000', 'https://opine.ink'],
   optionsSuccessStatus: 200,
   credentials: true,
 };
