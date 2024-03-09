@@ -19,6 +19,7 @@ import { SaveUserReportController } from '../presentation/controllers/SaveUserRe
 import { GetReportedUsersController } from '../presentation/controllers/GetReportedUsersController';
 import { GetRegistrationAnalyticsController } from '../presentation/controllers/GetRegistrationAnalyticsController';
 import { BanUserController } from '../presentation/controllers/BanUserController';
+import { checkUserTokenVersion } from './middlewares/checkUserTokenVersion';
 
 interface ServerControllers {
   createUserController: CreateUserController;
@@ -75,9 +76,14 @@ export class Server {
       res.send('User server is running successfully'),
     );
 
-    app.get('/', authenticateRole('user'), (req, res) => {
-      controllers.getUserDetailsController.handle(req, res);
-    });
+    app.get(
+      '/',
+      authenticateRole('user'),
+      checkUserTokenVersion,
+      (req, res) => {
+        controllers.getUserDetailsController.handle(req, res);
+      },
+    );
 
     app.get('/registrationAnalytics', authenticateRole('admin'), (req, res) => {
       controllers.getRegistrationAnalyticsController.handle(req, res);
@@ -106,6 +112,7 @@ export class Server {
     app.post(
       '/update',
       authenticateRole('user'),
+      checkUserTokenVersion,
       upload.single('profile'),
       (req, res) => controllers.updateUserController.handle(req, res),
     );
@@ -134,9 +141,14 @@ export class Server {
       controllers.resetPasswordController.handle(req, res);
     });
 
-    app.post('/logout', authenticateRole('user'), (req, res) => {
-      controllers.logoutUserController.handle(req, res);
-    });
+    app.post(
+      '/logout',
+      authenticateRole('user'),
+      checkUserTokenVersion,
+      (req, res) => {
+        controllers.logoutUserController.handle(req, res);
+      },
+    );
 
     app.listen(port, () => {
       console.log(`Server is running in ${port}`);
