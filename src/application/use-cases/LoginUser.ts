@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import { IUseCase } from '../../shared/interfaces/IUseCase';
 import jwt from 'jsonwebtoken';
 import { IUserAnalyticsRepository } from '../../domain/interfaces/IUserAnalyticsRepository';
+import { IMessageProducer } from '../../domain/interfaces/IMessageProducer';
 interface ILoginUserDTO {
   emailOrUsername: string;
   password: string;
@@ -17,6 +18,7 @@ export class LoginUser implements IUseCase<ILoginUserDTO, ILoginUserResult> {
   public constructor(
     private readonly _userRepo: IUserRepository,
     private readonly _userAnalyticsRepo: IUserAnalyticsRepository,
+    private readonly _messageProducer: IMessageProducer,
   ) {}
 
   public async execute(
@@ -70,6 +72,19 @@ export class LoginUser implements IUseCase<ILoginUserDTO, ILoginUserResult> {
 
     if (userAnalytics instanceof Error) {
       return userAnalytics;
+    }
+
+    const kafkaResult = await this._messageProducer.sendToTopic(
+      'user-login-topic',
+      'user-login-topic-1',
+      JSON.stringify({
+        userId: user.userId,
+        tokenVersion,
+      }),
+    );
+
+    if (kafkaResult instanceof Error) {
+      return kafkaResult;
     }
 
     return {

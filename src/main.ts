@@ -53,7 +53,7 @@ export async function main(): Promise<void> {
     s3UploadService,
     kafkaMessageProducer,
   );
-  const loginUser = new LoginUser(userRepo, userAnalyticsRepo);
+  const loginUser = new LoginUser(userRepo, userAnalyticsRepo, kafkaMessageProducer);
   const logoutUser = new LogoutUser(userAnalyticsRepo);
   const resendOTP = new ResendOTP(userRepo, emailService);
   const verifyUserEmail = new VerifyUserEmail(userRepo, kafkaMessageProducer);
