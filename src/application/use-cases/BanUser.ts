@@ -33,5 +33,11 @@ export class BanUser implements IUseCase<BanUserDTO, void> {
     if (changeUserStatus instanceof Error) {
       return changeUserStatus;
     }
+
+    const updateTokenVersion = await this._userRepo.updateTokenVersion(result);
+
+    if (updateTokenVersion instanceof Error) {
+      return updateTokenVersion;
+    }
   }
 }

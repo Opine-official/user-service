@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { InferSchemaType } from 'mongoose';
 
 const UserSchema = new mongoose.Schema(
   {
@@ -80,8 +80,15 @@ const UserSchema = new mongoose.Schema(
       required: true,
       default: false,
     },
+    tokenVersion: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
   },
   { timestamps: true },
 );
+
+export type User = InferSchemaType<typeof UserSchema>;
 
 export const UserModel = mongoose.model('User', UserSchema);

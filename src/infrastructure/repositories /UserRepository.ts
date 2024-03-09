@@ -261,9 +261,34 @@ export class UserRepository implements IUserRepository {
     }
   }
 
-  public async banUser(username: string): Promise<void | Error> {
+  public async banUser(username: string): Promise<string | Error> {
     try {
-      await UserModel.updateOne({ username: username }, { isBanned: true });
+      const userDocument = await UserModel.findOneAndUpdate(
+        { username: username },
+        { isBanned: true },
+        { new: true },
+      );
+
+      if (!userDocument) {
+        throw new Error('User not found');
+      }
+
+      return userDocument.userId;
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        return new Error(error.message);
+      }
+
+      return new Error('Something went wrong');
+    }
+  }
+
+  public async updateTokenVersion(userId: string): Promise<void | Error> {
+    try {
+      await UserModel.updateOne(
+        { userId: userId },
+        { $inc: { tokenVersion: 1 } },
+      );
     } catch (error: unknown) {
       if (error instanceof Error) {
         return new Error(error.message);

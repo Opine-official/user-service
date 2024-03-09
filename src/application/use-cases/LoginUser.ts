@@ -62,6 +62,14 @@ export class LoginUser implements IUseCase<ILoginUserDTO, ILoginUserResult> {
       return userAnalytics;
     }
 
+    const tokenVersionUpdate = await this._userRepo.updateTokenVersion(
+      user.userId,
+    );
+
+    if (tokenVersionUpdate instanceof Error) {
+      return tokenVersionUpdate;
+    }
+
     return {
       userId: user.userId,
       token,

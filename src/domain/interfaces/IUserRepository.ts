@@ -16,5 +16,6 @@ export interface IUserRepository {
   ): Promise<Error | void>;
   getMongoIdFromUserId(userId: string): Promise<string | Error>;
   getMongoIdFromUsername(username: string): Promise<string | Error>;
-  banUser(username: string): Promise<void | Error>;
+  banUser(username: string): Promise<string | Error>;
+  updateTokenVersion(userId: string): Promise<void | Error>;
 }
