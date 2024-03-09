@@ -39,7 +39,7 @@ export class LoginUserController implements IController {
     const response: LoginUserDTO = new LoginUserDTO(result.userId);
 
     res
-      .cookie('token', result.token, {
+      .cookie('userToken', result.token, {
         httpOnly: true,
         sameSite: 'none',
         secure: true,

@@ -44,13 +44,13 @@ export class LoginUser implements IUseCase<ILoginUserDTO, ILoginUserResult> {
       return new Error('Email not verified');
     }
 
-    const SECRET = process.env.JWT_SECRET;
+    const SECRET = process.env.USER_JWT_SECRET;
 
     if (!SECRET) {
       return new Error('Missing JWT secret');
     }
 
-    const token = jwt.sign({ userId: user.userId }, SECRET, {
+    const token = jwt.sign({ userId: user.userId, role: 'user' }, SECRET, {
       expiresIn: '24h',
     });
 

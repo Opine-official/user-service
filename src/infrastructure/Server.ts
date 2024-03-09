@@ -10,10 +10,7 @@ import { LogoutUserController } from '../presentation/controllers/LogoutUserCont
 import { ResendOTPController } from '../presentation/controllers/ResendOTPController';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import {
-  authenticateToken,
-  authenticateAdmin,
-} from '@opine-official/authentication';
+import { authenticateRole } from '@opine-official/authentication';
 import { GetUserDetailsController } from '../presentation/controllers/GetUserDetailsController';
 import { UpdateUserController } from '../presentation/controllers/UpdateUserController';
 import { GetUserByUsernameController } from '../presentation/controllers/GetUserByUsernameController';
@@ -78,19 +75,19 @@ export class Server {
       res.send('User server is running successfully'),
     );
 
-    app.get('/', authenticateToken, (req, res) => {
+    app.get('/', authenticateRole('user'), (req, res) => {
       controllers.getUserDetailsController.handle(req, res);
     });
 
-    app.get('/registrationAnalytics', authenticateAdmin, (req, res) => {
+    app.get('/registrationAnalytics', authenticateRole('admin'), (req, res) => {
       controllers.getRegistrationAnalyticsController.handle(req, res);
     });
 
-    app.get('/reports', authenticateAdmin, (req, res) => {
+    app.get('/reports', authenticateRole('admin'), (req, res) => {
       controllers.getReportedUsersController.handle(req, res);
     });
 
-    app.post('/ban', authenticateAdmin, (req, res) => {
+    app.post('/ban', authenticateRole('admin'), (req, res) => {
       controllers.banUserController.handle(req, res);
     });
 
@@ -108,7 +105,7 @@ export class Server {
 
     app.post(
       '/update',
-      authenticateToken,
+      authenticateRole('user'),
       upload.single('profile'),
       (req, res) => controllers.updateUserController.handle(req, res),
     );
@@ -137,7 +134,7 @@ export class Server {
       controllers.resetPasswordController.handle(req, res);
     });
 
-    app.post('/logout', authenticateToken, (req, res) => {
+    app.post('/logout', authenticateRole('user'), (req, res) => {
       controllers.logoutUserController.handle(req, res);
     });
 
