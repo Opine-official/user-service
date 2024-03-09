@@ -324,4 +324,28 @@ export class UserRepository implements IUserRepository {
       return new Error('Something went wrong');
     }
   }
+
+  public async compareTokenVersion(
+    userId: string,
+    tokenVersion: number,
+  ): Promise<boolean> {
+    try {
+      const userDocument = await UserModel.findOne({
+        userId: userId,
+        tokenVersion: tokenVersion,
+      });
+
+      if (!userDocument) {
+        return false;
+      }
+
+      return true;
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        return false;
+      }
+
+      return false;
+    }
+  }
 }
