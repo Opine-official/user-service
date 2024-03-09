@@ -50,9 +50,19 @@ export class LoginUser implements IUseCase<ILoginUserDTO, ILoginUserResult> {
       return new Error('Missing JWT secret');
     }
 
-    const token = jwt.sign({ userId: user.userId, role: 'user' }, SECRET, {
-      expiresIn: '24h',
-    });
+    const tokenVersion = await this._userRepo.updateTokenVersion(user.userId);
+
+    if (tokenVersion instanceof Error) {
+      return tokenVersion;
+    }
+
+    const token = jwt.sign(
+      { userId: user.userId, role: 'user', version: tokenVersion },
+      SECRET,
+      {
+        expiresIn: '24h',
+      },
+    );
 
     const userAnalytics = await this._userAnalyticsRepo.updateLogin(
       user.userId,
@@ -60,14 +70,6 @@ export class LoginUser implements IUseCase<ILoginUserDTO, ILoginUserResult> {
 
     if (userAnalytics instanceof Error) {
       return userAnalytics;
-    }
-
-    const tokenVersionUpdate = await this._userRepo.updateTokenVersion(
-      user.userId,
-    );
-
-    if (tokenVersionUpdate instanceof Error) {
-      return tokenVersionUpdate;
     }
 
     return {

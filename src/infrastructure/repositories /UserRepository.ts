@@ -283,12 +283,19 @@ export class UserRepository implements IUserRepository {
     }
   }
 
-  public async updateTokenVersion(userId: string): Promise<void | Error> {
+  public async updateTokenVersion(userId: string): Promise<number | Error> {
     try {
-      await UserModel.updateOne(
+      const userDoc = await UserModel.findOneAndUpdate(
         { userId: userId },
         { $inc: { tokenVersion: 1 } },
+        { new: true },
       );
+
+      if (!userDoc) {
+        throw new Error('User not found');
+      }
+
+      return userDoc.tokenVersion;
     } catch (error: unknown) {
       if (error instanceof Error) {
         return new Error(error.message);
