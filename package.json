@@ -14,7 +14,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@opine-official/authentication": "^3.0.0",
+    "@opine-official/authentication": "^4.1.0",
     "@types/cookie-parser": "^1.4.6",
     "aws-sdk": "^2.1547.0",
     "bcrypt": "^5.1.1",

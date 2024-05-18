@@ -261,9 +261,41 @@ export class UserRepository implements IUserRepository {
     }
   }
 
-  public async banUser(username: string): Promise<void | Error> {
+  public async banUser(username: string): Promise<string | Error> {
     try {
-      await UserModel.updateOne({ username: username }, { isBanned: true });
+      const userDocument = await UserModel.findOneAndUpdate(
+        { username: username },
+        { isBanned: true },
+        { new: true },
+      );
+
+      if (!userDocument) {
+        throw new Error('User not found');
+      }
+
+      return userDocument.userId;
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        return new Error(error.message);
+      }
+
+      return new Error('Something went wrong');
+    }
+  }
+
+  public async updateTokenVersion(userId: string): Promise<number | Error> {
+    try {
+      const userDoc = await UserModel.findOneAndUpdate(
+        { userId: userId },
+        { $inc: { tokenVersion: 1 } },
+        { new: true },
+      );
+
+      if (!userDoc) {
+        throw new Error('User not found');
+      }
+
+      return userDoc.tokenVersion;
     } catch (error: unknown) {
       if (error instanceof Error) {
         return new Error(error.message);
@@ -290,6 +322,30 @@ export class UserRepository implements IUserRepository {
       }
 
       return new Error('Something went wrong');
+    }
+  }
+
+  public async compareTokenVersion(
+    userId: string,
+    tokenVersion: number,
+  ): Promise<boolean> {
+    try {
+      const userDocument = await UserModel.findOne({
+        userId: userId,
+        tokenVersion: tokenVersion,
+      });
+
+      if (!userDocument) {
+        return false;
+      }
+
+      return true;
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        return false;
+      }
+
+      return false;
     }
   }
 }

@@ -10,10 +10,7 @@ import { LogoutUserController } from '../presentation/controllers/LogoutUserCont
 import { ResendOTPController } from '../presentation/controllers/ResendOTPController';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import {
-  authenticateToken,
-  authenticateAdmin,
-} from '@opine-official/authentication';
+import { authenticateRole } from '@opine-official/authentication';
 import { GetUserDetailsController } from '../presentation/controllers/GetUserDetailsController';
 import { UpdateUserController } from '../presentation/controllers/UpdateUserController';
 import { GetUserByUsernameController } from '../presentation/controllers/GetUserByUsernameController';
@@ -22,6 +19,7 @@ import { SaveUserReportController } from '../presentation/controllers/SaveUserRe
 import { GetReportedUsersController } from '../presentation/controllers/GetReportedUsersController';
 import { GetRegistrationAnalyticsController } from '../presentation/controllers/GetRegistrationAnalyticsController';
 import { BanUserController } from '../presentation/controllers/BanUserController';
+import { checkUserTokenVersion } from './middlewares/checkUserTokenVersion';
 
 interface ServerControllers {
   createUserController: CreateUserController;
@@ -45,6 +43,7 @@ const allowedOrigins = [
   'https://localhost:3000',
   'https://www.opine.ink',
   'https://opine.ink',
+  'https://7zxqc7l6j8.execute-api.us-east-1.amazonaws.com',
 ];
 
 const corsOptions = {
@@ -78,19 +77,24 @@ export class Server {
       res.send('User server is running successfully'),
     );
 
-    app.get('/', authenticateToken, (req, res) => {
-      controllers.getUserDetailsController.handle(req, res);
-    });
+    app.get(
+      '/',
+      authenticateRole('user'),
+      checkUserTokenVersion,
+      (req, res) => {
+        controllers.getUserDetailsController.handle(req, res);
+      },
+    );
 
-    app.get('/registrationAnalytics', authenticateAdmin, (req, res) => {
+    app.get('/registrationAnalytics', authenticateRole('admin'), (req, res) => {
       controllers.getRegistrationAnalyticsController.handle(req, res);
     });
 
-    app.get('/reports', authenticateAdmin, (req, res) => {
+    app.get('/reports', authenticateRole('admin'), (req, res) => {
       controllers.getReportedUsersController.handle(req, res);
     });
 
-    app.post('/ban', authenticateAdmin, (req, res) => {
+    app.post('/ban', authenticateRole('admin'), (req, res) => {
       controllers.banUserController.handle(req, res);
     });
 
@@ -108,7 +112,8 @@ export class Server {
 
     app.post(
       '/update',
-      authenticateToken,
+      authenticateRole('user'),
+      checkUserTokenVersion,
       upload.single('profile'),
       (req, res) => controllers.updateUserController.handle(req, res),
     );
@@ -137,9 +142,14 @@ export class Server {
       controllers.resetPasswordController.handle(req, res);
     });
 
-    app.post('/logout', authenticateToken, (req, res) => {
-      controllers.logoutUserController.handle(req, res);
-    });
+    app.post(
+      '/logout',
+      authenticateRole('user'),
+      checkUserTokenVersion,
+      (req, res) => {
+        controllers.logoutUserController.handle(req, res);
+      },
+    );
 
     app.listen(port, () => {
       console.log(`Server is running in ${port}`);
